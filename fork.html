@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{DOC_TITLE}}</title>
+    <style>
+      :root {
+        --paper: #f7f7f5;
+        --paper-edge: #efefea;
+        --ink: #1a1a1a;
+        --ink-soft: #4a4a4a;
+        --ink-faint: #7a7a7a;
+        --rule: #d8d8d2;
+        --rule-soft: #e8e8e2;
+        --accent: #6f9bb8;
+        --accent-soft: #d9e6f0;
+        --accent-faint: #eef4f8;
+        --warn: #b88a4a;
+        --warn-soft: #f5ecdc;
+        --danger: #a05050;
+        --code-bg: #ececea;
+
+        /* Semantic palette for three-layer cards. Rename freely
+           (e.g. --layer-a / --layer-b / --layer-c) when the three
+           layers in the doc are not brain/hands/session. */
+        --brain: #6f9bb8;
+        --brain-bg: #eef4f8;
+        --hands: #b88a4a;
+        --hands-bg: #f5ecdc;
+        --session: #6b7560;
+        --session-bg: #ecede5;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { font-size: 16px; }
+
+      /* Font stacks include both English serifs/monospace and CJK
+         fallbacks so the same template renders cleanly for English
+         or Chinese source content. */
+      body {
+        font-family:
+          ui-serif, "Charter", "Iowan Old Style", "Source Serif Pro", Georgia,
+          "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        padding: 64px 24px 96px;
+      }
+
+      .doc { max-width: 840px; margin: 0 auto; }
+
+      /* ─── Header ─── */
+      .doc-header {
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 28px;
+        margin-bottom: 48px;
+      }
+      .doc-eyebrow {
+        font-family:
+          ui-monospace, "SF Mono", Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 14px;
+      }
+      .doc-title {
+        font-family:
+          ui-serif, Charter, Georgia,
+          "Songti SC", "Source Han Serif SC", serif;
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.2;
+      }
+      .doc-subtitle {
+        font-size: 16px;
+        color: var(--ink-soft);
+        margin-top: 10px;
+        font-style: italic;
+      }
+      .doc-meta {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        color: var(--ink-faint);
+        margin-top: 18px;
+        display: flex;
+        gap: 24px;
+      }
+
+      /* ─── TL;DR ─── */
+      .tldr {
+        background: var(--accent-faint);
+        border-left: 2px solid var(--accent);
+        padding: 20px 24px;
+        margin-bottom: 56px;
+        font-size: 15px;
+      }
+      .tldr-label {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+
+      /* ─── Sections ─── */
+      section { margin-bottom: 56px; }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--rule);
+      }
+      h2 .num {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 12px;
+        color: var(--ink-faint);
+        font-weight: 500;
+        margin-right: 14px;
+        letter-spacing: 0.05em;
+      }
+      h3 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 28px 0 10px;
+      }
+      h4 {
+        font-size: 14px;
+        font-weight: 600;
+        margin: 22px 0 8px;
+      }
+      p { margin-bottom: 14px; }
+      p + p { margin-top: -2px; }
+      a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+      a:hover { border-bottom-color: var(--accent); }
+      code {
+        font-family:
+          ui-monospace, "SF Mono", Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 13px;
+        background: var(--code-bg);
+        padding: 1px 5px;
+        border-radius: 2px;
+      }
+      pre {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 12.5px;
+        line-height: 1.55;
+        background: var(--code-bg);
+        padding: 14px 18px;
+        margin: 14px 0 18px;
+        overflow-x: auto;
+        border-left: 2px solid var(--rule);
+      }
+      pre code { background: transparent; padding: 0; }
+      ul, ol { margin: 8px 0 16px 22px; }
+      li { margin-bottom: 6px; }
+      strong { font-weight: 600; }
+      em { color: var(--ink-soft); }
+      blockquote {
+        border-left: 2px solid var(--rule);
+        padding: 4px 0 4px 18px;
+        margin: 14px 0 18px;
+        color: var(--ink-soft);
+        font-style: italic;
+      }
+
+      /* ─── Tables ─── */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0 18px;
+        font-size: 14px;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--rule-soft);
+        vertical-align: top;
+      }
+      th {
+        font-weight: 600;
+        font-family:
+          ui-sans-serif, system-ui,
+          "PingFang SC", "Hiragino Sans GB", sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-faint);
+        border-bottom: 1px solid var(--rule);
+      }
+      tbody tr:hover { background: rgba(0,0,0,0.015); }
+      td.num {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 13px;
+      }
+      td.accent { color: var(--accent); font-weight: 500; }
+
+      /* ─── Callouts ─── */
+      .callout {
+        border: 1px solid var(--rule);
+        background: #fff;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .callout.warn {
+        border-color: #e6d4a8;
+        background: var(--warn-soft);
+      }
+      .callout.cite {
+        border-left: 2px solid var(--accent);
+        border-top: none; border-right: none; border-bottom: none;
+        background: var(--accent-faint);
+        padding-left: 22px;
+        font-style: italic;
+      }
+      .callout-label {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      .callout.warn .callout-label { color: var(--warn); }
+      .cite-source {
+        font-style: normal;
+        font-size: 12px;
+        color: var(--ink-faint);
+        margin-top: 10px;
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+      }
+
+      /* ─── Figure / Diagram ─── */
+      figure {
+        margin: 28px 0 32px;
+        border: 1px solid var(--rule);
+        background: #fff;
+      }
+      figure svg { display: block; width: 100%; height: auto; }
+      figure img { display: block; width: 100%; height: auto; }
+      figcaption {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        padding: 10px 16px;
+        border-top: 1px solid var(--rule-soft);
+        background: var(--paper-edge);
+      }
+      figcaption .fig-num {
+        color: var(--accent);
+        margin-right: 10px;
+        font-weight: 600;
+      }
+
+      /* ─── N-column concept cards ─── */
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 20px 0 18px;
+      }
+      .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+      .cards.cols-4 { grid-template-columns: repeat(4, 1fr); }
+      .card {
+        border: 1px solid var(--rule);
+        background: #fff;
+        padding: 16px 16px 14px;
+      }
+      .card-icon {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .card-name {
+        font-family:
+          ui-serif, Charter, Georgia,
+          "Songti SC", "Source Han Serif SC", serif;
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .card-where {
+        font-size: 12px;
+        color: var(--ink-faint);
+        font-style: italic;
+        margin-bottom: 10px;
+      }
+      .card-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+      /* tone variants for cards */
+      .card.tone-a .card-icon { color: var(--brain); }
+      .card.tone-b .card-icon { color: var(--hands); }
+      .card.tone-c .card-icon { color: var(--session); }
+
+      /* ─── Buttons / Inputs (for interactive sections) ─── */
+      .btn {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 8px 14px;
+        background: #fff;
+        color: var(--ink);
+        border: 1px solid var(--rule);
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      .btn:hover { background: var(--paper-edge); }
+      .btn.primary {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+      .btn.primary:hover { background: #5a87a4; }
+
+      input[type="text"], input[type="email"], textarea, select {
+        font-family:
+          ui-serif, Charter, Georgia,
+          "Songti SC", "Source Han Serif SC", serif;
+        font-size: 14px;
+        padding: 8px 12px;
+        background: #fff;
+        border: 1px solid var(--rule);
+        color: var(--ink);
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      input:focus, textarea:focus, select:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      label {
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      /* ─── Footer ─── */
+      footer {
+        margin-top: 80px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+        font-size: 12px;
+        color: var(--ink-faint);
+      }
+      footer h4 {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family:
+          ui-monospace, Menlo,
+          "PingFang SC", "Hiragino Sans GB", monospace;
+        margin-bottom: 10px;
+        color: var(--ink-soft);
+      }
+      footer ul { list-style: none; margin-left: 0; }
+      footer li { margin-bottom: 4px; }
+
+      .mascot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+
+      @media (max-width: 720px) {
+        body { padding: 32px 16px 64px; }
+        .doc-title { font-size: 26px; }
+        .cards, .cards.cols-2, .cards.cols-4 { grid-template-columns: 1fr; }
+        .doc-meta { flex-wrap: wrap; gap: 12px; }
+      }
+    </style>
+  </head>
+  <body>
+<article class="doc">
+<header class="doc-header"><div class="doc-eyebrow"><span class="mascot"></span>FORK · 源码解析 + 实践记录</div><h1 class="doc-title">用 100+ 个 /fork 调研 /fork：走出小径分叉的花园</h1><p class="doc-subtitle">在一个对话里，把 /fork 拆给自己看</p><div class="doc-meta"><span>STATUS · 实践记录</span><span>DATE · 2026-06</span><span>AUTHOR · 老朱</span></div></header>
+<div class="tldr"><div class="tldr-label">TL;DR</div><p>本文用 100 多个 /fork 调研 /fork 本身，在一个对话里派 fork 去查 fork，把实验和资料都跑完，主线只和我一起逐批核对、落 wiki。既是 Claude Code /fork 的解析，也是高强度用它调研一段时间后的复盘。</p></div>
+<section><h2><span class="num">01</span>引言：小径分叉的花园</h2><p>我有个老毛病，一个问题问着问着，更多的问题就涌了上来，必须赶在瞬时记忆消失之前噼里啪啦一顿操作<s>，否则忘了就不用学了</s>。其实问题多倒也不愁，<s>这是好事呀，</s>愁的是它们一批批地、三五成群地涌上来，却没有一个很好的方式来处理。于是，花园里分叉的小径越来越多，状态越来越混乱，手里好几份报告就这么难产。不是不写，<s>是要缓写，慢写，有规划地写，</s>是注意力被发散的好奇心扯散，主线迟迟收不了口。</p><p>在这之前，我解决这种发散有几条出路，但每条都差了那么点意思：</p><ul><li>n个问题打包成一段问出去，回答又长又糊，哪个都没说透；</li><li>一个个串行问，等问到第三个，后面的早忘了。到最后，即使我的脑子还记得住，模型也开始大海捞针了；</li><li>丢个 subagent 去查，它上下文是空的，得重新喂背景，上下文不全，能用的工具也有限；</li><li>起 /btw，不能用工具，还无法自动回传；</li><li>起个 <code>claude -p</code>，agent同样要重新交代，还落在另一个窗口；</li><li>大力出奇迹，/branch，但/了一次branch，仍有无数的branch要/。</li></ul><p>而这个问题，也是我开始着手构建自己的工具的原因之一。但人是一直踏入同一条河流的，老毛病犯了，工具也边写边发散，边发散边忘，根本无法收敛。</p><p>还好， /fork 大人来了，我有救了。按官方文档，它是一个继承了到目前为止整段对话的 subagent，最终会把结果回流，主窗口保持干净。直观上，它非常适合做非主线杂活，保证我阅读时的好奇心不消散。但我叒踏入了同一条河流，单是看一眼官方文档，就能勾出n个疑问：它如何保证命中缓存？一次能起几个 fork？fork 能不能套娃其他指令？返回的东西长什么样？和 /branch差别在哪？和之前的subagent差在哪？By the way，它和 /btw 指令有啥区别？</p><p>而既然要更加了解这个工具，这个工具直观上又最适合做非主线杂活，不如让英雄好汉查英雄好汉，派 fork 去查 fork。这篇文章里几乎每一个结论，都是这么来的。一个对话之内，我一直 /fork，把实验做完、把资料查完，主线只负责和我一起，把回流的结论逐批地核对（如果觉得结果需要核查，主agent可以auto-fork）、落wiki目录（内部文档），最后收拢成文，走出小径分叉的花园。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1120">
+  <defs>
+    <marker id="a" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="66" y="50" width="1548" height="86" fill="#0F0F0F"/>
+  <rect x="56" y="40" width="1548" height="86" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="86" y="98" font-size="40" font-weight="800" fill="#0F0F0F">一个对话，一批接一批地 fork，把调研跑完</text>
+  <text x="1586" y="92" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">ONE SESSION ·</text>
+  <text x="1586" y="112" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">FORK AFTER FORK</text>
+
+  <!-- pain (left) + 不停 fork 陈述 (right) -->
+  <rect x="66" y="158" width="430" height="118" fill="#0F0F0F"/>
+  <rect x="56" y="148" width="430" height="118" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="148" width="430" height="34" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="74" y="173" font-size="18" font-weight="800" fill="#0F0F0F">痛点 · 报告为什么难产</text>
+  <text x="76" y="212" font-size="16" font-weight="700" fill="#0F0F0F">问题多又发散，主线被岔路扯散</text>
+  <text x="76" y="240" font-size="16" font-weight="700" fill="#0F0F0F">一堆"进行中"卡在草稿箱收不了口</text>
+
+  <rect x="524" y="158" width="1090" height="118" fill="#136636"/>
+  <rect x="514" y="148" width="1090" height="118" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="536" y="186" font-size="20" font-weight="800" fill="#EFE9D9">解法 · 想到就甩一个，主线不停下来排队</text>
+  <text x="536" y="222" font-size="17" font-weight="700" fill="#EFE9D9">一个对话之内一批接一批地 fork：发散的问题被并行接住，主线一路把结论拢成文。</text>
+  <text x="536" y="252" font-size="16" font-weight="800" fill="#F5C518">没开 deep-research（幻觉无从查），上下文也没膨胀，脏活全锁在各 fork 那边。</text>
+
+  <!-- spine -->
+  <rect x="66" y="318" width="140" height="74" fill="#136636"/>
+  <rect x="56" y="308" width="140" height="74" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="126" y="342" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主对话</text>
+  <text x="126" y="368" font-size="13" font-weight="700" fill="#EFE9D9" text-anchor="middle">MAIN</text>
+  <line x1="196" y1="345" x2="1432" y2="345" stroke="#0F0F0F" stroke-width="6" marker-end="url(#a)"/>
+  <rect x="1450" y="318" width="164" height="74" fill="#0F0F0F"/>
+  <rect x="1440" y="308" width="164" height="74" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1522" y="342" font-size="20" font-weight="800" fill="#0F0F0F" text-anchor="middle">汇总成文</text>
+  <text x="1522" y="368" font-size="13" font-weight="800" fill="#0F0F0F" text-anchor="middle">没难产</text>
+  <circle cx="300" cy="345" r="11" fill="#0F0F0F"/>
+  <circle cx="560" cy="345" r="11" fill="#0F0F0F"/>
+  <circle cx="820" cy="345" r="11" fill="#0F0F0F"/>
+  <circle cx="1080" cy="345" r="11" fill="#0F0F0F"/>
+  <circle cx="1320" cy="345" r="11" fill="#0F0F0F"/>
+  <line x1="300" y1="356" x2="300" y2="406" stroke="#0F0F0F" stroke-width="3" marker-end="url(#a)"/>
+  <line x1="560" y1="356" x2="560" y2="406" stroke="#0F0F0F" stroke-width="3" marker-end="url(#a)"/>
+  <line x1="820" y1="356" x2="820" y2="406" stroke="#0F0F0F" stroke-width="3" marker-end="url(#a)"/>
+  <line x1="1080" y1="356" x2="1080" y2="406" stroke="#0F0F0F" stroke-width="3" marker-end="url(#a)"/>
+  <line x1="1320" y1="356" x2="1320" y2="406" stroke="#0F0F0F" stroke-width="3" marker-end="url(#a)"/>
+
+  <!-- batch helper: each batch = label + a grid of fork chips -->
+  <!-- BATCH 1 -->
+  <rect x="176" y="414" width="248" height="40" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="300" y="441" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">第 1 批 · 通道 / 缓存  ×17</text>
+  <g fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3">
+    <rect x="186" y="462" width="52" height="34"/><rect x="246" y="462" width="52" height="34"/><rect x="306" y="462" width="52" height="34"/><rect x="366" y="462" width="52" height="34"/>
+    <rect x="186" y="502" width="52" height="34"/><rect x="246" y="502" width="52" height="34"/><rect x="306" y="502" width="52" height="34"/>
+  </g>
+  <!-- BATCH 2 -->
+  <rect x="436" y="414" width="248" height="40" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="560" y="441" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">第 2 批 · 并发 / 排队  ×8</text>
+  <g fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3">
+    <rect x="446" y="462" width="52" height="34"/><rect x="506" y="462" width="52" height="34"/><rect x="566" y="462" width="52" height="34"/><rect x="626" y="462" width="52" height="34"/>
+    <rect x="446" y="502" width="52" height="34"/><rect x="506" y="502" width="52" height="34"/><rect x="566" y="502" width="52" height="34"/><rect x="626" y="502" width="52" height="34"/>
+  </g>
+  <!-- BATCH 3 -->
+  <rect x="696" y="414" width="248" height="40" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="820" y="441" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">第 3 批 · 能派生啥  ×6</text>
+  <g fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3">
+    <rect x="706" y="462" width="52" height="34"/><rect x="766" y="462" width="52" height="34"/><rect x="826" y="462" width="52" height="34"/>
+    <rect x="706" y="502" width="52" height="34"/><rect x="766" y="502" width="52" height="34"/><rect x="826" y="502" width="52" height="34"/>
+  </g>
+  <!-- BATCH 4 -->
+  <rect x="956" y="414" width="248" height="40" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1080" y="441" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">第 4 批 · ToolSearch  ×9</text>
+  <g fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3">
+    <rect x="966" y="462" width="52" height="34"/><rect x="1026" y="462" width="52" height="34"/><rect x="1086" y="462" width="52" height="34"/><rect x="1146" y="462" width="52" height="34"/>
+    <rect x="966" y="502" width="52" height="34"/><rect x="1026" y="502" width="52" height="34"/><rect x="1086" y="502" width="52" height="34"/><rect x="1146" y="502" width="52" height="34"/>
+    <rect x="966" y="542" width="52" height="34"/>
+  </g>
+  <!-- BATCH 5 ... still going -->
+  <rect x="1216" y="414" width="290" height="40" fill="#F5C518" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1361" y="441" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">第 n 批 · 写作中还在 fork …</text>
+  <g fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3">
+    <rect x="1226" y="462" width="52" height="34"/><rect x="1286" y="462" width="52" height="34"/><rect x="1346" y="462" width="52" height="34"/><rect x="1406" y="462" width="52" height="34"/>
+    <rect x="1226" y="502" width="52" height="34"/><rect x="1286" y="502" width="52" height="34"/>
+  </g>
+  <text x="1470" y="528" font-size="40" font-weight="800" fill="#0F0F0F">…</text>
+  <line x1="1500" y1="479" x2="1556" y2="479" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <text x="1556" y="528" font-size="14" font-weight="800" fill="#E85A1F" text-anchor="end">没停过</text>
+
+  <!-- counter strip -->
+  <rect x="76" y="610" width="1548" height="72" fill="#0F0F0F"/>
+  <rect x="66" y="600" width="1548" height="72" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="92" y="636" font-size="24" font-weight="800" fill="#0F0F0F">本 session 用了 104 个 fork</text>
+  <text x="92" y="662" font-size="17" font-weight="700" fill="#0F0F0F">每个 fork 自己上下文里反复读调工具，回流主线只各几百字，花得多、回得少。</text>
+
+  <!-- return band -->
+  <rect x="66" y="700" width="1548" height="108" fill="#0F0F0F"/>
+  <rect x="56" y="690" width="1548" height="108" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="80" y="726" font-size="22" font-weight="800" fill="#0F0F0F">每条 &lt;result&gt; 回流  →  主 agent 逐条拿工具外部核验  →  得到可靠结论后按 q&amp;a 落盘，串成一棵问答树  ✓</text>
+  <rect x="80" y="746" width="232" height="42" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="196" y="773" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="middle">读 transcript token</text>
+  <rect x="326" y="746" width="180" height="42" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="416" y="773" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="middle">查时间戳</text>
+  <rect x="520" y="746" width="200" height="42" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="620" y="773" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="middle">读 .meta.json</text>
+  <rect x="734" y="746" width="220" height="42" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="844" y="773" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="middle">grep 一手二进制</text>
+  <text x="992" y="775" font-size="16" font-weight="800" fill="#0F0F0F">→ 定论落在证据上，每条可溯源（69 次回流·一批批来）</text>
+
+  <!-- context: stock vs stock + overflow window -->
+  <text x="56" y="856" font-size="22" font-weight="800" fill="#0F0F0F">上下文占用 · 都塞进同一个窗口看（是存量，不是累计）</text>
+  <rect x="240" y="878" width="1000" height="98" fill="none" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="1000" y="866" width="240" height="26" fill="#0F0F0F"/>
+  <text x="1120" y="885" font-size="14" font-weight="800" fill="#EFE9D9" text-anchor="middle">一个上下文窗口</text>
+  <text x="56" y="912" font-size="16" font-weight="800" fill="#2A2A2A">主线·用 fork</text>
+  <rect x="252" y="896" width="120" height="28" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="386" y="917" font-size="15" font-weight="800" fill="#1F8A4C">≈ 平 · 整场只吸 &lt;result&gt;</text>
+  <text x="56" y="958" font-size="16" font-weight="800" fill="#2A2A2A">若全 inline</text>
+  <rect x="252" y="942" width="980" height="28" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <rect x="1248" y="942" width="150" height="28" fill="#E85A1F"/>
+  <line x1="1248" y1="956" x2="1416" y2="956" stroke="#E85A1F" stroke-width="6" marker-end="url(#a)"/>
+  <text x="1416" y="962" font-size="13" font-weight="800" fill="#E85A1F">撑爆·一个窗口根本装不下，需要不断压缩</text>
+
+  <!-- bottom summary -->
+  <rect x="66" y="1010" width="1548" height="56" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="840" y="1045" font-size="20" font-weight="800" fill="#0F0F0F" text-anchor="middle">一个对话内：一批接一批的 fork 把调研跑完，主线没膨胀、少触发 full compact，本篇就是产物</text>
+</svg>
+<figcaption><span class="fig-num">FIG 1</span>fork 并行调研、主线回流：走出小径分叉的花园</figcaption></figure></section>
+<section><h2><span class="num">02</span>一、/fork 是什么</h2><p><strong>全量上下文 + 隔离、并行、异步和回流。</strong> 按 Claude Code 官方文档，<strong>/fork 是一个继承了到目前为止整段对话的 subagent</strong>：它看到和主会话一模一样的 system prompt、工具、模型、消息历史，所以你甩给它一个旁支任务，不用重新解释背景；它自己的工具调用留在自己的上下文里，只有最终结果回流，主窗口保持干净。要紧的是它能一次起很多个：n 个问题 n 个 fork，想到就甩一个，各跑各的，主线不停，追问也只是再起一个。零碎时间里把发散的问题并行扔出去，不用守着等，主线那份报告反而能一口气写完。</p><p><strong>它怎么触发，那个开关到底改什么。</strong> fork 不用手动开——从 v2.1.161 起 <code>/fork</code> 命令默认就能用。触发 fork 主要三条路：</p><ol><li>你直接打 <code>/fork</code> 命令+指令，带不带 <code>CLAUDE_CODE_FORK_SUBAGENT</code> 都行；</li><li>设了那个<code>CLAUDE_CODE_FORK_SUBAGENT=1</code>后，模型本来要起冷启subagent（比如general-purpose）的地方会自动改起 fork（fork 本身也是 subagent，严格说是换一种 subagent 的起法）；</li><li>skill 里配 <code>context: fork</code>。</li></ol><p>所以那个环境变量改的不是"能不能 fork"，而是"模型默认派生subagent时要不要走 fork"，实际上，这个行为是可以被打破的，第二节再细嗦<s>，细嗦不是胡说</s>。</p><p><strong>落盘是一个指针。</strong> fork 的磁盘转录第一个节点，不是把父对话拷一份，而是一个指针 <code>fork-context-ref</code>，只存 <code>parentSessionId</code>、<code>parentLastUuid</code>、<code>contextLength</code> 三个字段。完整 prompt 由 harness 顺着这个指针在发请求时重建，重建出的前缀和父会话逐某大厂一致。这就是它命中父缓存的原因。</p><p><strong>回流走一条合成的 user 消息。</strong> 这是 fork 和 subagent 最容易混的地方。一般来说，subagent 回流是一个 <code>tool_result</code> 块，靠 <code>tool_use_id</code> 和主 agent 的 <code>tool_use</code> 配对，同步、卡在那一轮里。fork 不一样，它回流落盘的是 <code>{"type":"user","origin":{"kind":"task-notification"}}</code>：不和任何 tool_use 配对，异步。fork 在后台跑完，harness 把这条 system 来源的 user turn 注入进来、重新唤醒主循环。信封里值钱的是 <code>&lt;result&gt;</code>（唯一进主 context 的东西）和 <code>&lt;usage&gt;</code>，外加一个 <code>&lt;output-file&gt;</code> 指向完整转录，是事后唯一能审计的落点。</p><p><strong>回流的结论 Microcompact 擦不掉。</strong> Claude Code 每轮跑一个 Microcompact（内部文档），会擦掉旧的 tool_result，但从不动 user 消息。而 fork 的 <code>&lt;result&gt;</code> 恰好落地成 user 消息，于是它的结论永久钉在主 prefix 里、擦不掉；同样的活你 inline 自己干，产生的是一堆会被擦掉的 tool_result。所以 fork 干活时主线最干净（脏活锁在它那边），但它留下的结论最赖着不走。</p><p><strong>它的成本结构。</strong> fork 顺着指针重建父前缀，第一发就热命中缓存，继承一整段历史这件事本身几乎不额外花钱。fork 在继承来的上下文里反复读、调工具、推理，单个能跑到几十万 token，过程全隔离，回流进主线的只各几百字的 <code>&lt;result&gt;</code>。所以 fork 花的，不是"把上下文重背一遍"（那部分被缓存接住了），而是它自己跑那一大圈、外加主线把回流结论收拢整合的那点开销。</p></section>
+<section><h2><span class="num">03</span>二、它和别的"委派"方式差在哪</h2><p>把活交给另一个 agent 去跑，Claude Code 里有好几种方式，差别就在三个轴：是否继承上下文、有没有工具、结果回不回到主线。先摆一张表，下面逐个对比。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 600">
+  <rect x="0" y="0" width="1680" height="600" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="56" y="34" width="1568" height="64" fill="#0F0F0F"/>
+  <rect x="48" y="26" width="1568" height="64" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="74" y="68" font-size="30" font-weight="800" fill="#0F0F0F">五种委派 · 对比表（三个轴 + 什么时候用）</text>
+  <text x="1486" y="52" font-size="13" font-weight="800" fill="#0F0F0F">DELEGATE</text>
+  <text x="1500" y="70" font-size="13" font-weight="800" fill="#0F0F0F">· 5 WAYS</text>
+
+  <!-- header -->
+  <rect x="56" y="118" width="1568" height="58" fill="#0F0F0F"/>
+  <text x="166" y="155" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">方式</text>
+  <text x="361" y="155" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">上下文</text>
+  <text x="541" y="155" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">工具</text>
+  <text x="796" y="155" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">结果回流</text>
+  <text x="1290" y="155" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">什么时候用</text>
+
+  <!-- rows: cols 56|276|446|636|956|1624 ; h=68 from y176 -->
+  <!-- subagent -->
+  <rect x="56" y="176" width="1568" height="68" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="2"/>
+  <rect x="276" y="178" width="168" height="64" fill="#E4DCC4"/>
+  <line x1="276" y1="176" x2="276" y2="244" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="446" y1="176" x2="446" y2="244" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="636" y1="176" x2="636" y2="244" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="956" y1="176" x2="956" y2="244" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="68" y="217" font-size="21" font-weight="800" fill="#0F0F0F">冷启 subagent</text>
+  <text x="361" y="217" font-size="20" font-weight="700" fill="#2A2A2A" text-anchor="middle">空·喂背景</text>
+  <text x="541" y="217" font-size="20" font-weight="700" fill="#1F8A4C" text-anchor="middle">有·可限权</text>
+  <text x="796" y="217" font-size="20" font-weight="700" fill="#1F8A4C" text-anchor="middle">是·tool_result</text>
+  <text x="972" y="217" font-size="20" font-weight="700" fill="#0F0F0F">把检索/日志关外面、只取结论；隔离限权</text>
+  <!-- fork -->
+  <rect x="56" y="244" width="1568" height="68" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="2"/>
+  <rect x="276" y="246" width="168" height="64" fill="#CDE9D6"/>
+  <line x1="276" y1="244" x2="276" y2="312" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="446" y1="244" x2="446" y2="312" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="636" y1="244" x2="636" y2="312" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="956" y1="244" x2="956" y2="312" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="68" y="285" font-size="22" font-weight="800" fill="#1F8A4C">/fork</text>
+  <text x="361" y="285" font-size="20" font-weight="800" fill="#1F8A4C" text-anchor="middle">满·继承</text>
+  <text x="541" y="285" font-size="20" font-weight="800" fill="#1F8A4C" text-anchor="middle">有·全量</text>
+  <text x="796" y="285" font-size="20" font-weight="700" fill="#0F0F0F" text-anchor="middle">是·合成 user 消息</text>
+  <text x="972" y="285" font-size="20" font-weight="800" fill="#0F0F0F">脏活隔离 + 要结论 + 一次并行多问</text>
+  <!-- branch -->
+  <rect x="56" y="312" width="1568" height="68" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="2"/>
+  <rect x="276" y="314" width="168" height="64" fill="#CDE9D6"/>
+  <line x1="276" y1="312" x2="276" y2="380" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="446" y1="312" x2="446" y2="380" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="636" y1="312" x2="636" y2="380" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="956" y1="312" x2="956" y2="380" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="68" y="353" font-size="22" font-weight="800" fill="#0F0F0F">/branch</text>
+  <text x="361" y="353" font-size="20" font-weight="800" fill="#1F8A4C" text-anchor="middle">满·继承</text>
+  <text x="541" y="353" font-size="20" font-weight="700" fill="#0F0F0F" text-anchor="middle">有</text>
+  <text x="796" y="353" font-size="20" font-weight="700" fill="#C0392B" text-anchor="middle">否·控制权搬走</text>
+  <text x="972" y="353" font-size="20" font-weight="700" fill="#0F0F0F">从当前点岔一条能继续聊的平行会话</text>
+  <!-- btw -->
+  <rect x="56" y="380" width="1568" height="68" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="2"/>
+  <rect x="276" y="382" width="168" height="64" fill="#CDE9D6"/>
+  <line x1="276" y1="380" x2="276" y2="448" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="446" y1="380" x2="446" y2="448" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="636" y1="380" x2="636" y2="448" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="956" y1="380" x2="956" y2="448" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="68" y="421" font-size="22" font-weight="800" fill="#0F0F0F">/btw</text>
+  <text x="361" y="421" font-size="20" font-weight="800" fill="#1F8A4C" text-anchor="middle">满·继承</text>
+  <text x="541" y="421" font-size="20" font-weight="800" fill="#C0392B" text-anchor="middle">无·三层封</text>
+  <text x="796" y="421" font-size="20" font-weight="700" fill="#C0392B" text-anchor="middle">否·不写 cache</text>
+  <text x="972" y="421" font-size="20" font-weight="700" fill="#0F0F0F">看着全文问一句，别动手、别污染主线</text>
+  <!-- claude -p -->
+  <rect x="56" y="448" width="1568" height="68" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="2"/>
+  <rect x="276" y="450" width="168" height="64" fill="#E4DCC4"/>
+  <line x1="276" y1="448" x2="276" y2="516" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="446" y1="448" x2="446" y2="516" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="636" y1="448" x2="636" y2="516" stroke="#0F0F0F" stroke-width="2"/>
+  <line x1="956" y1="448" x2="956" y2="516" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="68" y="489" font-size="21" font-weight="800" fill="#0F0F0F">claude -p</text>
+  <text x="361" y="489" font-size="20" font-weight="700" fill="#2A2A2A" text-anchor="middle">空·新进程</text>
+  <text x="541" y="489" font-size="20" font-weight="700" fill="#1F8A4C" text-anchor="middle">有</text>
+  <text x="796" y="489" font-size="20" font-weight="700" fill="#E85A1F" text-anchor="middle">走 stdout</text>
+  <text x="972" y="489" font-size="20" font-weight="700" fill="#0F0F0F">脚本里批量跑、headless 自动化</text>
+
+  <!-- bottom -->
+  <rect x="64" y="542" width="1548" height="46" fill="#E85A1F"/>
+  <rect x="56" y="534" width="1548" height="46" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="78" y="564" font-size="20" font-weight="800" fill="#0F0F0F">三个轴：继承多少上下文 / 有没有工具 / 结果回不回主线（拓扑见下图）</text>
+</svg>
+<figcaption><span class="fig-num">FIG 2</span>五种委派 · 对比表（三个轴 + 什么时候用）</figcaption></figure><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1010">
+  <defs>
+    <marker id="aw" markerWidth="6" markerHeight="6" refX="4" refY="2" orient="auto"><path d="M0,0 L4 2 L0 4 Z" fill="#0F0F0F"/></marker>
+    <marker id="awg" markerWidth="6" markerHeight="6" refX="4" refY="2" orient="auto"><path d="M0,0 L4 2 L0 4 Z" fill="#1F8A4C"/></marker>
+    <marker id="awo" markerWidth="6" markerHeight="6" refX="4" refY="2" orient="auto"><path d="M0,0 L4 2 L0 4 Z" fill="#E85A1F"/></marker>
+    <marker id="awp" markerWidth="6" markerHeight="6" refX="4" refY="2" orient="auto"><path d="M0,0 L4 2 L0 4 Z" fill="#C0392B"/></marker>
+  </defs>
+  <rect x="0" y="0" width="1680" height="1010" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="56" y="34" width="1568" height="64" fill="#0F0F0F"/>
+  <rect x="48" y="26" width="1568" height="64" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="74" y="68" font-size="30" font-weight="800" fill="#0F0F0F">五种委派 · 主线视角的状态流转（不是步骤，是五种拓扑）</text>
+
+  <!-- ROW1: subagent / fork -->
+  <!-- subagent -->
+  <rect x="64" y="128" width="740" height="288" fill="#0F0F0F"/>
+  <rect x="56" y="120" width="740" height="288" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="74" y="138" width="210" height="40" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="179" y="166" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">冷启 subagent</text>
+  <rect x="92" y="210" width="140" height="48" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="162" y="241" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主线</text>
+  <line x1="162" y1="258" x2="162" y2="306" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <text x="174" y="288" font-size="16" font-weight="700" fill="#0F0F0F">spawn</text>
+  <rect x="92" y="310" width="300" height="52" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="242" y="343" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">subagent〔空·冷启〕有工具</text>
+  <path d="M392,336 C520,336 520,234 234,234" fill="none" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <text x="430" y="300" font-size="17" font-weight="800" fill="#0F0F0F">tool_result 回</text>
+  <rect x="74" y="368" width="704" height="32" fill="#F5C518" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="88" y="391" font-size="17" font-weight="800" fill="#0F0F0F">同步 · 主线等它干完才往下走</text>
+
+  <!-- fork -->
+  <rect x="832" y="128" width="732" height="288" fill="#0F0F0F"/>
+  <rect x="824" y="120" width="732" height="288" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="842" y="138" width="120" height="40" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="902" y="166" font-size="22" font-weight="800" fill="#1F8A4C" text-anchor="middle">/fork</text>
+  <rect x="860" y="210" width="130" height="48" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="925" y="241" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主线</text>
+  <line x1="990" y1="234" x2="1520" y2="234" stroke="#1F8A4C" stroke-width="5" marker-end="url(#awg)"/>
+  <text x="1300" y="225" font-size="18" font-weight="800" fill="#1F8A4C">不停</text>
+  <line x1="925" y1="258" x2="925" y2="306" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <rect x="860" y="310" width="300" height="52" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1010" y="343" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">fork〔满·继承〕后台跑</text>
+  <path d="M1160,330 C1300,330 1340,236 1500,236" fill="none" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <text x="1180" y="300" font-size="17" font-weight="800" fill="#0F0F0F">合成 user 消息插回</text>
+  <rect x="842" y="368" width="700" height="32" fill="#F5C518" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="856" y="391" font-size="17" font-weight="800" fill="#0F0F0F">异步 · 主线不停 · 可并行 n 个</text>
+
+  <!-- ROW2: branch / btw -->
+  <!-- branch -->
+  <rect x="64" y="448" width="740" height="288" fill="#0F0F0F"/>
+  <rect x="56" y="440" width="740" height="288" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="74" y="458" width="140" height="40" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="144" y="486" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">/branch</text>
+  <rect x="92" y="528" width="130" height="48" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="157" y="559" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主线</text>
+  <line x1="222" y1="552" x2="360" y2="552" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="372" y="562" font-size="32" font-weight="800" fill="#C0392B">×</text>
+  <text x="360" y="526" font-size="17" font-weight="800" fill="#C0392B">到此停</text>
+  <line x1="157" y1="576" x2="157" y2="628" stroke="#C0392B" stroke-width="4" marker-end="url(#awp)"/>
+  <text x="170" y="608" font-size="17" font-weight="800" fill="#C0392B">控制权搬走</text>
+  <rect x="92" y="632" width="540" height="52" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="362" y="665" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">branch〔满·继承〕你走进这条线继续</text>
+  <rect x="74" y="690" width="704" height="32" fill="#F5C518" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="88" y="713" font-size="17" font-weight="800" fill="#0F0F0F">控制权整个搬过去 · 不回流主线</text>
+
+  <!-- btw -->
+  <rect x="832" y="448" width="732" height="288" fill="#0F0F0F"/>
+  <rect x="824" y="440" width="732" height="288" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="842" y="458" width="120" height="40" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="902" y="486" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">/btw</text>
+  <rect x="860" y="528" width="130" height="48" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="925" y="559" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主线</text>
+  <line x1="990" y1="552" x2="1520" y2="552" stroke="#1F8A4C" stroke-width="5" marker-end="url(#awg)"/>
+  <text x="1300" y="543" font-size="18" font-weight="800" fill="#1F8A4C">不停</text>
+  <line x1="925" y1="576" x2="925" y2="628" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <rect x="860" y="632" width="320" height="52" fill="#CDE9D6" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1020" y="665" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">btw〔满 · 无工具·三层封〕</text>
+  <path d="M1180,650 C1320,650 1360,554 1500,554" fill="none" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <text x="1200" y="620" font-size="17" font-weight="800" fill="#0F0F0F">一句话回</text>
+  <rect x="842" y="690" width="700" height="32" fill="#F5C518" stroke="#0F0F0F" stroke-width="2"/>
+  <text x="856" y="713" font-size="17" font-weight="800" fill="#0F0F0F">只读旁问 · 不写 cache · 不落转录 · 即问即焚</text>
+
+  <!-- ROW3: claude -p (full width) -->
+  <rect x="64" y="768" width="1500" height="222" fill="#0F0F0F"/>
+  <rect x="56" y="760" width="1500" height="222" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="74" y="778" width="170" height="40" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="159" y="806" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">claude -p</text>
+  <!-- 会话内 -->
+  <rect x="92" y="836" width="200" height="120" fill="none" stroke="#1F8A4C" stroke-width="3"/>
+  <text x="192" y="862" font-size="17" font-weight="800" fill="#1F8A4C" text-anchor="middle">会话内</text>
+  <rect x="112" y="884" width="130" height="48" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="177" y="915" font-size="20" font-weight="800" fill="#EFE9D9" text-anchor="middle">主线</text>
+  <!-- 会话外 -->
+  <rect x="360" y="828" width="900" height="138" fill="none" stroke="#0F0F0F" stroke-width="3" stroke-dasharray="12 9"/>
+  <text x="392" y="856" font-size="18" font-weight="800" fill="#0F0F0F">会话外 · 独立进程世界</text>
+  <text x="392" y="918" font-size="20" font-weight="800" fill="#0F0F0F">shell</text>
+  <line x1="452" y1="912" x2="510" y2="912" stroke="#0F0F0F" stroke-width="3" marker-end="url(#aw)"/>
+  <rect x="514" y="888" width="280" height="50" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="654" y="920" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">claude -p〔新进程·空〕</text>
+  <line x1="794" y1="913" x2="900" y2="913" stroke="#E85A1F" stroke-width="5" marker-end="url(#awo)"/>
+  <text x="912" y="920" font-size="20" font-weight="800" fill="#E85A1F">stdout</text>
+  <rect x="1290" y="836" width="248" height="120" fill="#F5C518" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1414" y="884" font-size="17" font-weight="800" fill="#0F0F0F" text-anchor="middle">根本不在会话里</text>
+  <text x="1414" y="912" font-size="17" font-weight="800" fill="#0F0F0F" text-anchor="middle">跨进程边界</text>
+  <text x="1414" y="940" font-size="17" font-weight="800" fill="#0F0F0F" text-anchor="middle">结果走 stdout</text>
+</svg>
+<figcaption><span class="fig-num">FIG 3</span>五种委派 · 主线视角的状态流转</figcaption></figure><p><strong>fork 其实就是一种 subagent。</strong> 官方 sub-agents 文档原话是：</p><blockquote><p>“a fork is a subagent that inherits the entire conversation so far… drops the input isolation that subagents otherwise provide.”</p></blockquote><p>所以subagent 下分两支，<strong>冷启 subagent</strong>（Agent 工具起的那种：context 空、得重喂背景、工具可限权、适合做限权的只读 worker（可配 disallowedTools）、干完回一段摘要）和 <strong>fork</strong>（带着你全部上下文来那种）</p><p><strong>fork 和冷启 subagent 区别</strong>：</p><ol><li><strong>上下文全继承、不漏思考信息。</strong>fork 看到主会话至此的全部 system prompt / 工具 / 消息历史，连你中间那些推理都在场；冷启 subagent 只拿一段手写的 task 摘要，思考信息全丢了。</li><li><strong>background 命中父缓存。</strong>fork 顺指针重建父前缀，符合前缀缓存规则；冷启 subagent 从零起、read=0。</li><li><strong>/fork 体感异步。</strong>你打 <code>/fork</code> 是甩出去就走、主线继续跑；它在后台排队/执行、跑完异步回流（主 agent 正忙时就 hold 在队列里）。</li></ol><p>这三条合起来才是 fork 的价值、也是它和冷启 subagent 的真区别。至于"能不能再委派"是另一层能力差：fork 继承了 Agent 工具，所以是可以再起 subagent的、冷启 subagent 的 Agent 工具被剔了所以不能。</p><p><strong>哪次subagent委派会变成 fork。</strong> 派发逻辑只看派发subagent时，是否填了<code>subagent_type</code>，缺了走 fork 分支拷父对话，填了（比如 <code>general-purpose</code>）就起冷启 subagent。所以第一节那两条触发路的差别就在这：</p><ul><li><code>/fork</code> 命令带不带 env 都起真 fork；</li><li>主agent的 auto-fork 需要满足：设置 <code>CLAUDE_CODE_FORK_SUBAGENT=1</code> &amp;&amp; 调用subagent工具时，<code>subagent_type</code> 缺省。所以<code>CLAUDE_CODE_FORK_SUBAGENT=1</code> 设置的是默认用fork的方式派发subagent，而非强制。所以即使设置了环境变量，也可以启动别的类型的subagent，比如直接说“派生一个 genreral-purpose subagent”。</li></ul><blockquote><p>顺带分清两个常被混的字段：</p></blockquote><p><strong>fork vs /branch。</strong> /branch 也带着满上下文，但它是"搬家"不是"派活"：从当前这点岔出一条独立的、能继续聊下去的平行会话，控制权整个搬过去，结果不回流到主线。所以 fork 和 branch 在缓存上没本质差别，真区别只在控制流：</p><ul><li>fork 派出去、跑完把 <code>&lt;result&gt;</code> 回流给主线；</li><li>branch 是你自己走进那条线、不回流。</li></ul><p><strong>fork vs /btw。</strong> /btw 是"看着全文问一句、不许动手"的只读旁问：它带着满上下文，却既<strong>不使用工具</strong>、也不把这轮写回缓存、更不落转录，问完即焚，所以特别便宜（满 context 全走 cache_read、新问题只多那几十 token）。</p><p>但它怎么做到不使用工具？把 tools 从请求里删去肯定不合理吧？/fork 去grep 源码后，发现是三层叠出来的：</p><ul><li>wire 里的 tools 数组原样保留（前缀不变、缓存命中）</li><li>harness 的权限层 <code>canUseTool</code> 直接返回 deny（"Side questions cannot use tools"）</li><li>prompt 层再补一句"你没有任何工具可用"。</li></ul><p>这三层正好把软硬分了出来：</p><ul><li>canUseTool 那道 deny 是硬的，模型再想调也执行不了；</li><li>而 fork 的 boilerplate 里 <code>Do NOT spawn subagents</code> 只是 prompt 文本，是软的。我要求一个 fork 去调 Agent 工具，它真起了一个子 agent。</li></ul><p>再往下看一层，/btw 还不是个专门机制：源码里 <code>querySource</code> 有 31 个取值（compact、generate_session_title、extract_memories…），side_question 即 /btw 只是其一，这一族廉价一次性查询都走 <code>maxTurns:1 + skipCacheWrite + skipTranscript</code> 同一套，读缓存但不写回、也不落盘，这也是为什么当我想通过本机上的转录来验证结论时，翻遍目录也找不到。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1080">
+  <defs>
+    <marker id="a" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="66" y="50" width="1548" height="88" fill="#0F0F0F"/>
+  <rect x="56" y="40" width="1548" height="88" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="86" y="98" font-size="38" font-weight="800" fill="#0F0F0F">/btw 的“没工具”是封出来的，不是删出来的</text>
+  <text x="1586" y="94" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">GATED,</text>
+  <text x="1586" y="114" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">NOT DELETED</text>
+
+  <!-- request -->
+  <rect x="610" y="166" width="470" height="58" fill="#136636"/>
+  <rect x="600" y="156" width="470" height="58" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="835" y="194" font-size="22" font-weight="800" fill="#EFE9D9" text-anchor="middle">你：看着全文，旁问一句</text>
+  <line x1="835" y1="214" x2="835" y2="250" stroke="#0F0F0F" stroke-width="5" marker-end="url(#a)"/>
+
+  <!-- layer 1 -->
+  <rect x="66" y="268" width="1548" height="96" fill="#0F0F0F"/>
+  <rect x="56" y="258" width="1548" height="96" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="258" width="250" height="96" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="181" y="298" font-size="22" font-weight="800" fill="#EFE9D9" text-anchor="middle">① wire</text>
+  <text x="181" y="328" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">tools 数组</text>
+  <text x="330" y="300" font-size="21" font-weight="800" fill="#0F0F0F">原样保留 → 前缀逐字节不变</text>
+  <text x="330" y="332" font-size="16" font-weight="700" fill="#2A2A2A">工具没删，模型 schema 视图 = 主 loop 视图</text>
+  <rect x="1230" y="278" width="368" height="56" fill="#136636"/>
+  <text x="1414" y="313" font-size="19" font-weight="800" fill="#EFE9D9" text-anchor="middle">缓存全链命中 ✓</text>
+
+  <!-- layer 2 -->
+  <rect x="66" y="380" width="1548" height="96" fill="#B33F12"/>
+  <rect x="56" y="370" width="1548" height="96" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="370" width="250" height="96" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="181" y="410" font-size="22" font-weight="800" fill="#EFE9D9" text-anchor="middle">② harness 层</text>
+  <text x="181" y="440" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">canUseTool</text>
+  <text x="330" y="412" font-size="21" font-weight="800" fill="#0F0F0F">→ DENY  ×</text>
+  <text x="330" y="444" font-size="16" font-weight="700" fill="#2A2A2A">"Side questions cannot use tools"，真想调也执行不了</text>
+  <rect x="1230" y="390" width="368" height="56" fill="#B33F12"/>
+  <text x="1414" y="425" font-size="19" font-weight="800" fill="#EFE9D9" text-anchor="middle">硬拦截</text>
+
+  <!-- layer 3 -->
+  <rect x="66" y="492" width="1548" height="96" fill="#0F0F0F"/>
+  <rect x="56" y="482" width="1548" height="96" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="482" width="250" height="96" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="181" y="522" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">③ prompt 层</text>
+  <text x="181" y="552" font-size="15" font-weight="700" fill="#2A2A2A" text-anchor="middle">软提醒</text>
+  <text x="330" y="524" font-size="21" font-weight="800" fill="#0F0F0F">注入："你没有任何工具可用"</text>
+  <text x="330" y="556" font-size="16" font-weight="700" fill="#2A2A2A">让模型干脆别费劲想调</text>
+  <rect x="1230" y="502" width="368" height="56" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1414" y="537" font-size="19" font-weight="800" fill="#0F0F0F" text-anchor="middle">软引导</text>
+
+  <!-- flag + result -->
+  <rect x="66" y="612" width="760" height="78" fill="#000000"/>
+  <rect x="56" y="602" width="760" height="78" fill="#0F0F0F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="436" y="636" font-size="19" font-weight="800" fill="#F5C518" text-anchor="middle">skipCacheWrite + skipTranscript</text>
+  <text x="436" y="664" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">读 cache 不写回 · 不落盘 · 对主 loop 完全透明</text>
+  <rect x="864" y="612" width="750" height="78" fill="#136636"/>
+  <rect x="854" y="602" width="750" height="78" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1229" y="636" font-size="19" font-weight="800" fill="#EFE9D9" text-anchor="middle">结果：只答用户一句</text>
+  <text x="1229" y="664" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">翻遍目录找不到它的转录（因为不落盘）</text>
+
+  <!-- 三条路线 -->
+  <text x="56" y="746" font-size="22" font-weight="800" fill="#0F0F0F">三条软约束 · 谁真拦得住</text>
+  <!-- /fork -->
+  <rect x="66" y="772" width="490" height="190" fill="#0F0F0F"/>
+  <rect x="56" y="762" width="490" height="190" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="762" width="490" height="40" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="78" y="790" font-size="19" font-weight="800" fill="#0F0F0F">/fork</text>
+  <text x="78" y="836" font-size="17" font-weight="700" fill="#0F0F0F">WIRE　留工具</text>
+  <text x="78" y="866" font-size="17" font-weight="700" fill="#0F0F0F">AGENT　无硬闸</text>
+  <text x="78" y="896" font-size="17" font-weight="700" fill="#0F0F0F">PROMPT　Do NOT spawn（软）</text>
+  <text x="78" y="936" font-size="17" font-weight="800" fill="#E85A1F">→ 能被穿透（实测穿过）</text>
+  <!-- fullcompact -->
+  <rect x="606" y="772" width="490" height="190" fill="#0F0F0F"/>
+  <rect x="596" y="762" width="490" height="190" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="596" y="762" width="490" height="40" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="618" y="790" font-size="19" font-weight="800" fill="#0F0F0F">fullcompact</text>
+  <text x="618" y="836" font-size="17" font-weight="700" fill="#0F0F0F">WIRE　留工具</text>
+  <text x="618" y="866" font-size="17" font-weight="700" fill="#0F0F0F">AGENT　无硬闸</text>
+  <text x="618" y="896" font-size="17" font-weight="700" fill="#0F0F0F">PROMPT　只准输出文本（软）</text>
+  <text x="618" y="936" font-size="17" font-weight="800" fill="#E85A1F">→ ~2.79% 漏（Finisky 测）</text>
+  <!-- /btw -->
+  <rect x="1146" y="772" width="468" height="190" fill="#136636"/>
+  <rect x="1136" y="762" width="468" height="190" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="1136" y="762" width="468" height="40" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1158" y="790" font-size="19" font-weight="800" fill="#0F0F0F">/btw</text>
+  <text x="1158" y="836" font-size="17" font-weight="700" fill="#EFE9D9">WIRE　留工具</text>
+  <text x="1158" y="866" font-size="17" font-weight="800" fill="#EFE9D9">AGENT　硬 deny ✓</text>
+  <text x="1158" y="896" font-size="17" font-weight="700" fill="#EFE9D9">PROMPT　软提醒</text>
+  <text x="1158" y="936" font-size="17" font-weight="800" fill="#F5C518">→ 拦得住（软+硬，完整）</text>
+
+  <!-- point -->
+  <rect x="66" y="996" width="1548" height="56" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="830" y="1031" font-size="20" font-weight="800" fill="#0F0F0F" text-anchor="middle">删 tools 会破前缀缓存，所以留着工具、改在 agent 层硬 deny；/btw 只是 31 个内部一次性查询的一个出口</text>
+</svg>
+<figcaption><span class="fig-num">FIG 4</span>/btw 的三层封（保缓存 + 硬闸 + 软禁）</figcaption></figure><p><strong>fork vs claude -p。</strong> <code>claude -p</code>是 Claude Code 的 headless 入口，从 shell 起一个独立的顶层会话，跑完把结果打到 stdout。它归在 <code>claude</code> 那一档主 agent 里，不是狭义上的 subagent。正因如此，它看着也"带工具、能跑活"，却不在主会话里：没有 parent、fresh context、背景得重新交代。</p><ul><li>fork 是会话内派出、回流给 parent；</li><li>claude -p 是另起一个进程世界。</li></ul><blockquote><p><strong>fork 自己不能再 fork，但它经 Bash 起一个 claude -p，就跨过了进程边界</strong>。</p></blockquote><p><strong>Harness的许多设计被同一件事拽着：保住前缀缓存。</strong> 缓存按严格前缀算（顺序 tools、system、messages），改 tools 那一段就让后面整条作废（官方原话 "Modifying tool definitions invalidates the entire cache"）。回头看，好几处都在避免踩到这条红线：</p><ul><li>/btw 死活不删 tools、改在prompt中提示 + harness 权限层 deny；</li><li>fork 用指针逐某大厂重建父前缀、好命中，而且不删subagent派发工具；</li><li>branch 直接复用父会话那条还热着的缓存；</li><li>连 tool-search 加载新工具，也是把 tool_reference 塞进 messages 尾、不动前缀。</li></ul><blockquote><p>不动工具名单怎么让它动态加载工具呢？各家有不同的方案，可以参考 <a href="https://blog.wh1isper.top/2026/03/06/tool-search-for-agents/">Agent 工具发现：从上下文膨胀到按需加载</a></p></blockquote><p>读 harness 的设计，"这一步是不是在护缓存"几乎是把万能钥匙。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 720">
+  <defs>
+    <marker id="a" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="1680" height="720" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="66" y="50" width="1548" height="88" fill="#0F0F0F"/>
+  <rect x="56" y="40" width="1548" height="88" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="86" y="98" font-size="40" font-weight="800" fill="#0F0F0F">缓存是Harness工具设计的引力中心</text>
+  <text x="1586" y="94" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">PREFIX CACHE</text>
+  <text x="1586" y="114" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">IS THE GRAVITY</text>
+
+  <!-- spokes -->
+  <rect x="66" y="172" width="470" height="150" fill="#0F0F0F"/>
+  <rect x="56" y="162" width="470" height="150" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="162" width="470" height="34" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="74" y="186" font-size="17" font-weight="800" fill="#EFE9D9">/btw · 不删工具</text>
+  <text x="74" y="228" font-size="17" font-weight="700" fill="#0F0F0F">删 tools 会破前缀，所以留着</text>
+  <text x="74" y="256" font-size="17" font-weight="700" fill="#0F0F0F">改在 agent 层 canUseTool deny</text>
+  <text x="74" y="290" font-size="15" font-weight="800" fill="#1F8A4C">→ 缓存全链命中 ✓</text>
+
+  <rect x="1144" y="172" width="470" height="150" fill="#0F0F0F"/>
+  <rect x="1134" y="162" width="470" height="150" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="1134" y="162" width="470" height="34" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1152" y="186" font-size="17" font-weight="800" fill="#EFE9D9">fork · 指针重建父前缀</text>
+  <text x="1152" y="228" font-size="17" font-weight="700" fill="#0F0F0F">context-ref 顺指针逐字节重建</text>
+  <text x="1152" y="256" font-size="17" font-weight="700" fill="#0F0F0F">前缀和父会话一致才命中</text>
+  <text x="1152" y="290" font-size="15" font-weight="800" fill="#1F8A4C">→ cache_read 42917 · 95%</text>
+
+  <rect x="66" y="532" width="470" height="150" fill="#0F0F0F"/>
+  <rect x="56" y="522" width="470" height="150" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="56" y="522" width="470" height="34" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="74" y="546" font-size="17" font-weight="800" fill="#EFE9D9">软约束 · Do NOT spawn…</text>
+  <text x="74" y="588" font-size="17" font-weight="700" fill="#0F0F0F">硬办法(删工具)会破前缀</text>
+  <text x="74" y="616" font-size="17" font-weight="700" fill="#0F0F0F">所以只用 prompt 软禁</text>
+  <text x="74" y="650" font-size="15" font-weight="800" fill="#E85A1F">代价：软约束能被穿透</text>
+
+  <rect x="1144" y="532" width="470" height="150" fill="#0F0F0F"/>
+  <rect x="1134" y="522" width="470" height="150" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="1134" y="522" width="470" height="34" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1152" y="546" font-size="17" font-weight="800" fill="#EFE9D9">worker 图 · 存文字占位</text>
+  <text x="1152" y="588" font-size="17" font-weight="700" fill="#0F0F0F">历史图存 [Image #N] 文字占位</text>
+  <text x="1152" y="616" font-size="17" font-weight="700" fill="#0F0F0F">base64 会撑大前缀、占位不会</text>
+  <text x="1152" y="650" font-size="15" font-weight="800" fill="#1F8A4C">→ worker 前缀稳·缓存命中 ✓</text>
+
+  <!-- center hub -->
+  <rect x="600" y="372" width="480" height="200" fill="#136636"/>
+  <rect x="590" y="362" width="480" height="200" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="830" y="398" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">前缀缓存</text>
+  <rect x="612" y="416" width="146" height="46" fill="#F5C518" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="685" y="445" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">tools</text>
+  <rect x="758" y="416" width="146" height="46" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="831" y="445" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">system</text>
+  <rect x="904" y="416" width="146" height="46" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="977" y="445" font-size="18" font-weight="800" fill="#0F0F0F" text-anchor="middle">messages</text>
+  <text x="830" y="498" font-size="15" font-weight="700" fill="#F5C518" text-anchor="middle">"Modifying tool definitions invalidates the entire cache"</text>
+  <text x="830" y="528" font-size="17" font-weight="800" fill="#EFE9D9" text-anchor="middle">动 tools 段 → 后面 system + messages 全作废</text>
+  <text x="830" y="552" font-size="14" font-weight="700" fill="#EFE9D9" text-anchor="middle">官方文档 · platform.claude.com</text>
+
+  <line x1="490" y1="312" x2="640" y2="392" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <line x1="1180" y1="312" x2="1030" y2="392" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <line x1="490" y1="582" x2="642" y2="540" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <line x1="1180" y1="582" x2="1028" y2="540" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+</svg>
+<figcaption><span class="fig-num">FIG 5</span>缓存是 Harness 工具设计的引力中心</figcaption></figure></section>
+<section><h2><span class="num">04</span>三、它能起多少、能派生什么</h2><p><strong>并发上限和排队。</strong> 让 agent 去 grep 本机 claude.exe（v2.1.165）读出来的是源码里那个 <code>XUO</code> 函数，<code>min(16, max(2, 核数 − 2))</code>，传进 CPU 核数，我这台 12 核代入是 10。（同一个上限也管着 Workflow 里 <code>agent()</code> 的并发，≤16，两处共用。）实测两批交叉验证：13 个 fork 执行窗口峰值 6，25 个 fork 峰值贴到 9、排队从 10.7 拖到 47.7 秒。超上限是排队、不是被拒。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1720 1180">
+  <defs>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5"
+            orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+
+  <!-- canvas -->
+  <rect x="0" y="0" fill="#EFE9D9"/>
+
+  <!-- ── TITLE ───────────────────────────────────────────── -->
+  <text x="60" y="78" font-size="44" font-weight="900" fill="#0F0F0F" letter-spacing="-0.5">25 个 FORK 并发  ·  峰值 9  ·  排队 10.7s → 47.7s</text>
+  <rect x="60" y="96" width="980" height="6" fill="#0F0F0F"/>
+
+  <!-- ── CHART FRAME ─────────────────────────────────────── -->
+  <!-- chart area: x 200..1400, y 160..820 -->
+  <!-- background panel with ink border + orange offset shadow -->
+  <rect x="72" y="148" width="1576" height="700" fill="#E85A1F"/>
+  <rect x="60" y="136" width="1576" height="700" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+
+  <!-- Y axis (vertical 3px ink line at x=200) -->
+  <rect x="198" y="170" width="3" height="640" fill="#0F0F0F"/>
+
+  <!-- X axis (horizontal 3px ink line at y=810) -->
+  <rect x="200" y="810" width="1200" height="3" fill="#0F0F0F"/>
+
+  <!-- X axis ticks + labels (0s, 20s, 40s, 60s): 16 px/s -->
+  <!-- t=0 -> x=200 ; t=20 -> x=520 ; t=40 -> x=840 ; t=60 -> x=1160 -->
+  <rect x="199" y="810" width="3" height="14" fill="#0F0F0F"/>
+  <rect x="519" y="810" width="3" height="14" fill="#0F0F0F"/>
+  <rect x="839" y="810" width="3" height="14" fill="#0F0F0F"/>
+  <rect x="1159" y="810" width="3" height="14" fill="#0F0F0F"/>
+  <text x="200" y="848" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">0s</text>
+  <text x="520" y="848" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">20s</text>
+  <text x="840" y="848" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">40s</text>
+  <text x="1160" y="848" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">60s</text>
+  <text x="1380" y="848" font-size="16" font-weight="700" fill="#2A2A2A">t (秒)</text>
+
+  <!-- Y axis labels (sparse: 0, 8, 16, 24) -->
+  <!-- 25 forks span y=180..800, pitch = 24.8; round to 25. fork i top y = 180 + i*25, bar height ~16 -->
+  <!-- fork 0 -> y=180 ; fork 8 -> 380 ; fork 16 -> 580 ; fork 24 -> 780 -->
+  <text x="186" y="194" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="end">FORK 0</text>
+  <text x="186" y="394" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="end">FORK 8</text>
+  <text x="186" y="594" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="end">FORK 16</text>
+  <text x="186" y="794" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="end">FORK 24</text>
+
+  <!-- ── DASHED ORANGE LINE at t=10s (first queue boundary) ── -->
+  <!-- t=10 -> x = 200 + 10*16 = 360 ; series of short ink rects to fake dash. Place under bars (drawn first). -->
+  <!-- 12 dashes from y=170 to y=800: pitch 53, dash height 30 -->
+  <rect x="357" y="170" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="208" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="246" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="284" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="322" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="360" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="398" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="436" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="474" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="512" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="550" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="588" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="626" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="664" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="702" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="740" width="6" height="22" fill="#E85A1F"/>
+  <rect x="357" y="778" width="6" height="22" fill="#E85A1F"/>
+  <!-- Label in the blank zone just above the chart bars -->
+  <text x="370" y="170" font-size="17" font-weight="900" fill="#E85A1F">↓ t = 10s · 首次排队边界</text>
+
+  <!-- ── GANTT BARS ──────────────────────────────────────── -->
+  <!-- Wave 1 (forks 0–9): start near t=0, exec 8–24s.  10 bars = peak concurrency.
+       Wave 2 (forks 10–17): queued 10.7s → ~25s.
+       Wave 3 (forks 18–24): queued 25s → 47.7s.
+       Pixel math: x = 200 + start*16 ; width = exec*16 ; row y = 180 + i*25 ; bar height 16. -->
+
+  <!-- Fork 0 : start=0.0  exec=18.5  green -->
+  <rect x="200" y="180" width="296" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 1 : start=0.2  exec=12.4  green -->
+  <rect x="203" y="205" width="198" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 2 : start=0.3  exec=24.0  pink (slow) -->
+  <rect x="205" y="230" width="384" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 3 : start=0.4  exec=8.5  green -->
+  <rect x="206" y="255" width="136" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 4 : start=0.6  exec=15.7  green -->
+  <rect x="210" y="280" width="251" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 5 : start=0.7  exec=22.3  pink -->
+  <rect x="211" y="305" width="357" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 6 : start=0.9  exec=3.8  green -->
+  <rect x="214" y="330" width="61" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 7 : start=1.0  exec=11.2  green -->
+  <rect x="216" y="355" width="179" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 8 : start=1.2  exec=20.4  pink -->
+  <rect x="219" y="380" width="326" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 9 : start=1.4  exec=2.5  green -->
+  <rect x="222" y="405" width="40" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+
+  <!-- Wave 2: queue starts ~10.7s. Fork 6 finished at 4.7s, Fork 9 at 3.9s, Fork 3 at 8.9s — but with cap=10, slot opens when first wave1 finishes -->
+  <!-- Fork 10: start=10.7  exec=14.0  green -->
+  <rect x="371" y="430" width="224" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 11: start=12.4  exec=21.5  pink -->
+  <rect x="398" y="455" width="344" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 12: start=13.9  exec=9.6  green -->
+  <rect x="422" y="480" width="154" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 13: start=16.2  exec=17.8  green -->
+  <rect x="459" y="505" width="285" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 14: start=18.5  exec=6.4  green -->
+  <rect x="496" y="530" width="102" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 15: start=20.1  exec=23.2  pink -->
+  <rect x="522" y="555" width="371" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 16: start=22.4  exec=11.0  green -->
+  <rect x="558" y="580" width="176" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 17: start=24.8  exec=15.5  green -->
+  <rect x="597" y="605" width="248" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+
+  <!-- Wave 3: tail, queues 25 → 47.7 -->
+  <!-- Fork 18: start=27.6  exec=10.8  green -->
+  <rect x="642" y="630" width="173" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 19: start=30.4  exec=19.2  pink -->
+  <rect x="686" y="655" width="307" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 20: start=33.5  exec=5.0  green -->
+  <rect x="736" y="680" width="80" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 21: start=36.1  exec=14.8  green -->
+  <rect x="778" y="705" width="237" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 22: start=39.8  exec=8.2  green -->
+  <rect x="837" y="730" width="131" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 23: start=43.2  exec=12.6  green -->
+  <rect x="891" y="755" width="202" height="16" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Fork 24: start=47.7  exec=21.9  pink -->
+  <rect x="963" y="780" width="350" height="16" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+
+  <!-- ── PEAK 9 BADGE (yellow) ────────────────────────────── -->
+  <!-- Park in upper region between fork 0–2 rows (right of those bars) -->
+  <!-- shadow -->
+  <rect x="678" y="208" width="184" height="60" fill="#0F0F0F"/>
+  <rect x="670" y="200" width="184" height="60" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="762" y="240" font-size="26" font-weight="900" fill="#0F0F0F" text-anchor="middle">PEAK = 9</text>
+  <!-- arrow from badge bottom-left to densest slice (x ~ 240, y top of fork 5 ~ 305) -->
+  <line x1="678" y1="262" x2="266" y2="308" stroke="#0F0F0F" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <!-- ── 排队等待 ARROW + LABEL on the right edge of queued bars ── -->
+  <!-- Point: tail of wave 3 around fork 24, start x=963 ; label sits to the right above -->
+  <text x="1090" y="700" font-size="20" font-weight="900" fill="#0F0F0F">排队等待</text>
+  <text x="1090" y="724" font-size="26" font-weight="900" fill="#E85A1F">10.7s → 47.7s</text>
+  <!-- arrow from label down to fork 24 start -->
+  <line x1="1095" y1="745" x2="980" y2="788" stroke="#0F0F0F" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <!-- Chart caption (lives in title strip area, well above the chart panel) -->
+  <text x="1080" y="78" font-size="20" font-weight="700" fill="#2A2A2A">FORK 执行窗口扫描线 · 每行一个 fork · 长度 = 执行时长</text>
+
+  <!-- ── FORMULA BOX ─────────────────────────────────────── -->
+  <!-- Orange offset shadow -->
+  <rect x="84" y="900" width="940" height="232" fill="#E85A1F"/>
+  <rect x="72" y="888" width="940" height="232" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="4"/>
+  <!-- Title bar inside -->
+  <rect x="72" y="888" width="940" height="44" fill="#0F0F0F"/>
+  <text x="92" y="920" font-size="20" font-weight="900" fill="#EFE9D9" letter-spacing="0.5">FORK 并发上限源码 · src/utils/concurrency.js</text>
+
+  <!-- Code -->
+  <text x="92" y="970" font-size="22" font-weight="700" fill="#0F0F0F" xml:space="preserve">function XUO(H) {</text>
+  <text x="92" y="998" font-size="22" font-weight="700" fill="#0F0F0F" xml:space="preserve">  return Math.min(16, Math.max(2, H - 2))</text>
+  <text x="92" y="1026" font-size="22" font-weight="700" fill="#0F0F0F" xml:space="preserve">}</text>
+  <text x="92" y="1062" font-size="20" font-weight="700" fill="#1F8A4C" xml:space="preserve">// XUO(os.cpus().length)</text>
+  <text x="92" y="1090" font-size="20" font-weight="700" fill="#1F8A4C" xml:space="preserve">// 12 cores → min(16, max(2, 10)) = 10</text>
+
+  <!-- ── SIDEBAR (right of formula box) ──────────────────── -->
+  <rect x="1060" y="900" width="600" height="232" fill="#0F0F0F"/>
+  <rect x="1048" y="888" width="600" height="232" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+
+  <!-- Three takeaway lines, each with a colored marker -->
+  <rect x="1068" y="918" width="14" height="28" fill="#F06CA8" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1094" y="940" font-size="22" font-weight="900" fill="#0F0F0F">不是被拒,是排队</text>
+
+  <rect x="1068" y="976" width="14" height="56" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1094" y="996" font-size="20" font-weight="800" fill="#0F0F0F">上限 ≈ 10</text>
+  <text x="1094" y="1024" font-size="18" font-weight="600" fill="#2A2A2A">实测峰值 9 · 执行抖动没顶到 10</text>
+
+  <rect x="1068" y="1054" width="14" height="56" fill="#F5C518" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1094" y="1074" font-size="20" font-weight="800" fill="#0F0F0F">用 duration_ms 排序推并发会被污染</text>
+  <text x="1094" y="1102" font-size="18" font-weight="600" fill="#2A2A2A">必须用执行窗口扫描线</text>
+
+  <!-- Legend (bottom right under chart area) -->
+  <rect x="1180" y="148" width="14" height="14" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1202" y="160" font-size="15" font-weight="700" fill="#0F0F0F">执行快</text>
+  <rect x="1262" y="148" width="14" height="14" fill="#F06CA8" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="1284" y="160" font-size="15" font-weight="700" fill="#0F0F0F">执行慢</text>
+</svg>
+<figcaption><span class="fig-num">FIG 6</span>fork 并发 · 执行窗口扫描线</figcaption></figure><p><strong>接收是批量，不是串行。</strong> 回流之后主 agent 也不是一个个处理：fork 在主 agent 说话时跑完的，通知先攒着，等这轮一说完，harness 把攒着的一次性打包塞进下一轮（实测时最多的一批 8 个一起进）。所以 n 个 fork 不会摊成 n 个串行轮，唯一躲不掉的那点串行，是"把 n 个结果放一起综合"得在一个 context 里做，花一轮生成，不是 fork 跑的那几分钟。</p><p><strong>fork能套娃吗？先说明两点：</strong></p><ul><li><strong>冷启 subagent 不能再 spawn</strong>：构造它的工具集时 Agent 工具被剔掉了，Explore/Plan 的注册项也明写 "All tools except Agent"。实测起 general-purpose subagent，自报工具里确实没有 Agent。</li><li><strong>fork 不能再直接 fork</strong>：不是删工具，而是"省略 subagent_type → 起 fork"那条派发路在 fork 内部不再触发（fork-context-ref 继承深度=1、只给一层），所以 fork 内即便省略 subagent_type，也只落成冷启 subagent、不是嵌套 fork。</li></ul><blockquote><p>“A fork cannot spawn further forks.”</p></blockquote><p>但 fork 手里仍是全量工具，冷启subagent、claude -p、workflow 它都能发起。派发fork时，prompt里的 <code>Do NOT spawn subagents</code> 只是可穿透的软禁、不是第二道硬闸。这条硬限不是"不许递归"、也不是"不许更多 agent"，它锁的是 fork-context-ref 那套继承机制的深度，只给你一层。fork 自己生不出 fork，但它经 Bash 起的 claude -p 是个独立顶层进程，那个进程既能再 fork、又能再起 claude -p，理论上任意深。换句话说，想堆更深，换条机制（走进程边界）就能绕开这堵墙，只不过要交过路费（每过一道边界丢一次上下文继承、退回冷启）。</p><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1080">
+  <defs>
+    <marker id="a" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="66" y="50" width="1548" height="88" fill="#0F0F0F"/>
+  <rect x="56" y="40" width="1548" height="88" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="86" y="98" font-size="38" font-weight="800" fill="#0F0F0F">“fork 不能 fork”锁的是继承深度，不是递归</text>
+  <text x="1586" y="94" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">DEPTH = 1,</text>
+  <text x="1586" y="114" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">NOT RECURSION</text>
+
+  <!-- ===== top: escape topology ===== -->
+  <line x1="730" y1="170" x2="730" y2="470" stroke="#0F0F0F" stroke-width="3" stroke-dasharray="12 8"/>
+  <rect x="648" y="156" width="166" height="36" fill="#0F0F0F"/>
+  <text x="731" y="181" font-size="17" font-weight="800" fill="#EFE9D9" text-anchor="middle">进程边界</text>
+  <text x="100" y="184" font-size="17" font-weight="800" fill="#2A2A2A">会话内 · fork 继承机制</text>
+  <text x="830" y="184" font-size="17" font-weight="800" fill="#2A2A2A">独立进程 · claude -p</text>
+
+  <rect x="110" y="212" width="300" height="100" fill="#136636"/>
+  <rect x="100" y="202" width="300" height="100" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="250" y="244" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">fork</text>
+  <text x="250" y="276" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">继承父对话 · 共享缓存</text>
+
+  <line x1="250" y1="302" x2="250" y2="362" stroke="#E85A1F" stroke-width="4" marker-end="url(#a)"/>
+  <text x="286" y="340" font-size="30" font-weight="800" fill="#E85A1F">×</text>
+  <rect x="100" y="370" width="300" height="92" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="4" stroke-dasharray="12 8"/>
+  <text x="250" y="406" font-size="20" font-weight="800" fill="#2A2A2A" text-anchor="middle">再来一个 fork</text>
+  <text x="250" y="436" font-size="13" font-weight="700" fill="#2A2A2A" text-anchor="middle">a fork cannot spawn further forks</text>
+
+  <line x1="400" y1="252" x2="838" y2="252" stroke="#0F0F0F" stroke-width="5" marker-end="url(#a)"/>
+  <text x="620" y="238" font-size="16" font-weight="800" fill="#0F0F0F" text-anchor="middle">经 Bash 起 claude -p</text>
+
+  <rect x="858" y="212" width="340" height="100" fill="#B33F12"/>
+  <rect x="848" y="202" width="340" height="100" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1018" y="244" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">claude -p</text>
+  <text x="1018" y="276" font-size="15" font-weight="700" fill="#EFE9D9" text-anchor="middle">独立顶层进程 · 无 parent</text>
+
+  <line x1="1018" y1="302" x2="1018" y2="356" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <rect x="858" y="364" width="340" height="46" fill="#136636"/>
+  <rect x="848" y="356" width="340" height="46" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1018" y="386" font-size="18" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓ 能再 fork</text>
+  <rect x="858" y="426" width="340" height="46" fill="#136636"/>
+  <rect x="848" y="418" width="340" height="46" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1018" y="448" font-size="18" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓ 能再 claude -p</text>
+
+  <line x1="1188" y1="379" x2="1276" y2="400" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <line x1="1188" y1="441" x2="1276" y2="420" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+  <rect x="1296" y="356" width="290" height="110" fill="#0F0F0F"/>
+  <rect x="1286" y="346" width="290" height="110" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1431" y="392" font-size="22" font-weight="800" fill="#0F0F0F" text-anchor="middle">理论上任意深</text>
+  <text x="1431" y="428" font-size="14" font-weight="700" fill="#0F0F0F" text-anchor="middle">只受 OS 进程 / 鉴权 / 成本</text>
+
+  <!-- ===== bottom: full matrix ===== -->
+  <text x="56" y="528" font-size="22" font-weight="800" fill="#0F0F0F">组合矩阵 · 每条都读了落盘 .meta.json / 转录核过（不是听 fork 自报）</text>
+
+  <!-- header -->
+  <rect x="56" y="552" width="430" height="50" fill="#0F0F0F"/>
+  <text x="271" y="585" font-size="18" font-weight="800" fill="#EFE9D9" text-anchor="middle">链</text>
+  <rect x="490" y="552" width="150" height="50" fill="#0F0F0F"/>
+  <text x="565" y="585" font-size="18" font-weight="800" fill="#EFE9D9" text-anchor="middle">行不行</text>
+  <rect x="644" y="552" width="970" height="50" fill="#0F0F0F"/>
+  <text x="660" y="585" font-size="18" font-weight="800" fill="#EFE9D9">怎么知道（外部核）</text>
+
+  <!-- rows -->
+  <!-- r1 -->
+  <rect x="56" y="606" width="430" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="644" font-size="19" font-weight="800" fill="#0F0F0F">fork → subagent</text>
+  <rect x="490" y="606" width="150" height="62" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="646" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓</text>
+  <rect x="644" y="606" width="970" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="644" font-size="17" font-weight="700" fill="#0F0F0F">fork 调 Agent 工具起了子 agent，零报错</text>
+  <!-- r2 -->
+  <rect x="56" y="668" width="430" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="706" font-size="19" font-weight="800" fill="#0F0F0F">fork → claude -p</text>
+  <rect x="490" y="668" width="150" height="62" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="708" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓</text>
+  <rect x="644" y="668" width="970" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="706" font-size="17" font-weight="700" fill="#0F0F0F">fork 经 Bash 真跑 claude -p，token 穿回（.meta.json = fork）</text>
+  <!-- r3 -->
+  <rect x="56" y="730" width="430" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="768" font-size="19" font-weight="800" fill="#0F0F0F">fork → workflow</text>
+  <rect x="490" y="730" width="150" height="62" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="770" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓</text>
+  <rect x="644" y="730" width="970" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="768" font-size="17" font-weight="700" fill="#0F0F0F">fork 调 Workflow，后台起 dynamic workflow、spawn worker 回结果</text>
+  <!-- r4 -->
+  <rect x="56" y="792" width="430" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="830" font-size="19" font-weight="800" fill="#0F0F0F">fork → fork</text>
+  <rect x="490" y="792" width="150" height="62" fill="#E85A1F" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="832" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">×</text>
+  <rect x="644" y="792" width="970" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="830" font-size="17" font-weight="700" fill="#0F0F0F">源码写死 a fork cannot spawn further forks（唯一硬墙）</text>
+  <!-- r5 -->
+  <rect x="56" y="854" width="430" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="892" font-size="19" font-weight="800" fill="#0F0F0F">claude -p → fork</text>
+  <rect x="490" y="854" width="150" height="62" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="894" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓</text>
+  <rect x="644" y="854" width="970" height="62" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="892" font-size="17" font-weight="700" fill="#0F0F0F">env 开着的 claude -p 省略类型 → 落 fork-context-ref</text>
+  <!-- r6 -->
+  <rect x="56" y="916" width="430" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="78" y="954" font-size="19" font-weight="800" fill="#0F0F0F">claude -p → claude -p</text>
+  <rect x="490" y="916" width="150" height="62" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="565" y="956" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">✓</text>
+  <rect x="644" y="916" width="970" height="62" fill="#E4DCC4" stroke="#0F0F0F" stroke-width="3"/>
+  <text x="660" y="954" font-size="17" font-weight="700" fill="#0F0F0F">嵌套 claude -p，内层 token 穿回外层</text>
+
+  <!-- cost note -->
+  <rect x="66" y="998" width="1548" height="60" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="830" y="1035" font-size="19" font-weight="800" fill="#0F0F0F" text-anchor="middle">硬限锁的是 fork-context-ref 继承机制的深度 = 1；换进程边界绕过，过路费 = 每过一界丢一次上下文继承、退回冷启</text>
+</svg>
+<figcaption><span class="fig-num">FIG 7</span>fork 不能 fork：继承深度=1 与进程边界逃逸</figcaption></figure></section>
+<section><h2><span class="num">05</span>四、这几个命令我平时怎么用</h2><p>上面那张对比表落到日常，大致这么分工：</p><ul><li>要把一坨一次性检索或日志关在外面、只取结论，（大多数情况下主agent会自动指定）用 冷启subagent（顺便能限权，做个只读的安全 worker）；</li><li>要并行追一堆发散的问题、还想要结论回来，用 /fork；</li><li>要从当前这点岔一条能继续聊下去的平行会话，用 /branch；</li><li>只想看着全文问一句、不动手不污染主线，用 /btw（但我很少使用，也许问题能在单次问答中满足，但好奇心不行）；</li><li>要在脚本里批量跑、headless 自动化，用 <code>claude -p</code>。比如使用skill的评测循环就是 spawn 一批 claude -p 拿同一个 query 反复跑、测描述稳不稳，再配两个 subagent 打分；</li><li>不过任务一跑长，进程偶尔会半路歇火；这时我在外头加个 /goal 当监工，让它一直游到海水变蓝。但/goal和/effort utlracode(workflow)都基于一个前提：你的问题已经基本被定义清楚了。</li></ul><p>但/fork也有一些注意点：</p><ul><li><strong>手动 fork 带不上图。</strong> 图粘进 /fork 命令本身 → 记成 attachment 文件引用,不展开成视觉块 → fork 只拿到 [Image #N] 占位符 → 看不到(除非它自己去 Read 文件)。</li><li><strong>产出结果不会被 Microcompact。</strong> fork 的结果落成 user message、Microcompact 不擦，永久钉在主 prefix；要可擦的用 inline subagent（留下能被后续清理的 tool_result）。但是返回的结果本来就不多，不擦更符合预期。</li><li><strong>fork 其实不便宜。</strong> 带了全量上下文，思考的更加全面，一个 fork 烧几万到上百万 token，回主线的只有几百字 <code>&lt;result&gt;</code>。它省的是"主线干净"、不是 token。</li></ul><p><strong>另外，</strong>这趟用/fork调研/fork中最该记的，也许是我栽的几次车，它们划出了"在一个会对我撒谎的系统里怎么求真"的边界。我的调研流程里，在每次批量/fork的答案返回以后，主 agent 对需要核验的结论，从外部进行核对（读 transcript 的 token、时间戳、<code>.meta.json</code>、grep 二进制），而经过验证或者被推翻的结果，都会按照落盘到wiki里的qa树上。</p><p>但这个方式也有它够不着的盲区，它能戳穿 agent 的自报，却仍然戳不穿"提问者自己埋进去的前提"。比如"自动 fork 没复现"那次，真凶是agent做实验时的prompt里填了 <code>general-purpose</code>，用自己的参数把结论否了，即使开个 subagent 去查也是同一个盲区。这种"自己的动作污染了结果"的 confound，agent难以察觉。那一层暂时只能靠我自己的直觉和判断，这也是为什么定论最后还得过人的判断。<strong>所以我喜欢使用/fork的另一个原因是，它的返回速度和返回的信息量，刚好是我的能力能cover住的。</strong></p><blockquote><p>那有聪明的同学就要问了，同学同学，你为什么不开deep-research呢？ <s>那我问你，你开智驾模式上班手为什么不离开方向盘(bushi)？</s> deep-research（连同 workflow 模式）把验证这步交给里头几个对抗 subagent 互相找茬，机器查机器，看起来很美好。 但就目前我自己的使用实践看，<s>调研可能使用deep-research，但deep-research用来调研有点不太可能（诶我的头怎么尖尖的），</s>更靠得住的还是人的判断：模型到底有没有 grep 源码、该疑哪条自报、哪个反例不能当噪声扔，这些是那几个验证 subagent 难以做到的。即使验证思路能落到skill，但“直觉”却难以复刻<s>（也许是我经验不足，难以直接从返回的海量信息中揪出错漏之处🤫）</s>。当然，这也许是模型在长上下文时还不足够强，但我无法判断模型的边界到底在哪里，概率能否将幻觉变成真的直觉。 而fork 把人留在裁判位上，一批一批地积累qa树，每一批问题与结论，我都能注意到。 什么叫自动挡油门直接踩到底的操控感啊（战术后仰）。</p></blockquote><figure><svg style="width:100%;height:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1680 1000">
+  <defs>
+    <marker id="a" markerWidth="7" markerHeight="7" refX="5.5" refY="2.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 2.5 L0 5 z"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" fill="#EFE9D9"/>
+
+  <!-- title -->
+  <rect x="66" y="50" width="1548" height="90" fill="#0F0F0F"/>
+  <rect x="56" y="40" width="1548" height="90" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="88" y="100" font-size="42" font-weight="800" fill="#0F0F0F">本次调研用 fork，而非 deep-research</text>
+  <text x="1586" y="94" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">WHO IS</text>
+  <text x="1586" y="114" font-size="15" font-weight="800" fill="#0F0F0F" text-anchor="end">THE JUDGE</text>
+  <text x="60" y="178" font-size="23" font-weight="700" fill="#2A2A2A">区别只在一件事：谁来当裁判。</text>
+
+  <!-- ===== LEFT: fork ===== -->
+  <rect x="90" y="222" width="640" height="64" fill="#136636"/>
+  <rect x="80" y="212" width="640" height="64" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="400" y="254" font-size="27" font-weight="800" fill="#EFE9D9" text-anchor="middle">fork：人在裁判位</text>
+
+  <rect x="80" y="312" width="640" height="104" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="400" y="352" font-size="24" font-weight="800" fill="#0F0F0F" text-anchor="middle">fork 提假说、跑实验</text>
+  <text x="400" y="388" font-size="16" font-weight="600" fill="#2A2A2A" text-anchor="middle">继承整段上下文，并行不打断</text>
+  <line x1="400" y1="416" x2="400" y2="452" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+
+  <rect x="80" y="460" width="640" height="120" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="80" y="460" width="640" height="42" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="400" y="489" font-size="22" font-weight="800" fill="#EFE9D9" text-anchor="middle">主 agent 拿工具外部核+直觉 ✓</text>
+  <text x="400" y="542" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">读 transcript · grep 源码 · .meta.json</text>
+  <line x1="400" y1="580" x2="400" y2="616" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+
+  <rect x="90" y="634" width="640" height="104" fill="#136636"/>
+  <rect x="80" y="624" width="640" height="104" fill="#1F8A4C" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="400" y="666" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">定论落在证据上，且每轮都加入了人的直觉</text>
+  <text x="400" y="702" font-size="18" font-weight="700" fill="#EFE9D9" text-anchor="middle">察觉到 agent 验证的可能不对，能指挥 agent 顺着字节查回去</text>
+
+  <!-- ===== center VS ===== -->
+  <circle cx="840" cy="470" r="50" fill="#0F0F0F"/>
+  <circle cx="833" cy="463" r="50" fill="#F5C518" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="833" y="475" font-size="30" font-weight="800" fill="#0F0F0F" text-anchor="middle">VS</text>
+
+  <!-- ===== RIGHT: deep-research ===== -->
+  <rect x="960" y="222" width="640" height="64" fill="#B33F12"/>
+  <rect x="950" y="212" width="640" height="64" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1270" y="254" font-size="27" font-weight="800" fill="#EFE9D9" text-anchor="middle">deep-research：裁判也外包</text>
+
+  <rect x="950" y="312" width="640" height="104" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1270" y="352" font-size="24" font-weight="800" fill="#0F0F0F" text-anchor="middle">一个问题丢进去</text>
+  <text x="1270" y="388" font-size="16" font-weight="600" fill="#2A2A2A" text-anchor="middle">一次性大任务，自己跑</text>
+  <line x1="1270" y1="416" x2="1270" y2="452" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+
+  <rect x="950" y="460" width="640" height="120" fill="#EFE9D9" stroke="#0F0F0F" stroke-width="4"/>
+  <rect x="950" y="460" width="640" height="42" fill="#E85A1F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1270" y="489" font-size="22" font-weight="800" fill="#EFE9D9" text-anchor="middle">几个对抗 subagent 自己验自己</text>
+  <text x="1270" y="542" font-size="18" font-weight="700" fill="#0F0F0F" text-anchor="middle">机器查机器（workflow 模式也一样）</text>
+  <line x1="1270" y1="580" x2="1270" y2="616" stroke="#0F0F0F" stroke-width="4" marker-end="url(#a)"/>
+
+  <rect x="960" y="634" width="640" height="104" fill="#000000"/>
+  <rect x="950" y="624" width="640" height="104" fill="#0F0F0F" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="1270" y="666" font-size="24" font-weight="800" fill="#EFE9D9" text-anchor="middle">一坨结论 · 黑箱</text>
+  <text x="1270" y="702" font-size="18" font-weight="700" fill="#F5C518" text-anchor="middle">难以顺回落盘的字节，对于我来说，更多时候只能整体信或不信</text>
+
+  <!-- ===== verdict ===== -->
+  <rect x="70" y="806" width="1540" height="120" fill="#0F0F0F"/>
+  <rect x="60" y="796" width="1540" height="120" fill="#F06CA8" stroke="#0F0F0F" stroke-width="4"/>
+  <text x="830" y="844" font-size="28" font-weight="800" fill="#0F0F0F" text-anchor="middle">就目前的实践：人的直觉与判断  &gt;  workflow 里那几个用来验证的 subagent</text>
+  <text x="830" y="884" font-size="19" font-weight="700" fill="#0F0F0F" text-anchor="middle">fork 把人留在裁判位；deep-research 把裁判外包出去，可信度就垮了一截。</text>
+</svg>
+<figcaption><span class="fig-num">FIG 8</span>为什么是 /fork 而不是 deep-research</figcaption></figure></section>
+<section><h2><span class="num">06</span>五、/fork带给我什么</h2><p><strong>追问的摩擦减少了。</strong> 回到开头那个老毛病。以前那些发散的问题是负担，因为问一个的代价不低：要么打断主线、要么另开窗口、要么忍着。fork 把这个代价压到几乎为零，想到就甩一个，主线不停。代价一降，好奇心就不再被压着，反而越用越多，越来越转换为稳定的求知欲：一个问题勾出五个，五个再各自勾更多，就像是这篇文章，用100多个fork去调研fork。学习这件事的摩擦，被又往下压了一档。</p><p><strong><s>妈妈再也</s></strong><strong>不用担心我边写作边提问</strong><strong><s>啦</s></strong><strong>。</strong>写这篇写到一半，我又想顺手核几个点，fork 到底跑不跑得起 claude -p？能不能发起 workflow？agentType的类型有多少种？手动/fork+图片为什么无法生效？这都是写着写着冒出来的岔路。换以前，要么停下来去开几个新对话查实验、打断这篇，要么记个 TODO 等它凉。这次我直接甩 fork 去验，不用起新对话，而session的上下文依旧健康。</p><p><strong>好奇心照样发散，但这次回答收敛住了。</strong> /fork让我在提问-&gt;纠正-&gt;落盘-&gt;产出的流程在一个主对话中闭环了。我的使用方式是，想到的问题就开个 fork 去问，回流时人和主线一起查验，并结合LLM-wiki落盘，记录、合并、纠正问答树。像git一样，主线干净，旁路清晰。</p><p><strong>回到那个学习工具。</strong>"读的时候并行涌现一堆问题、别让它们排队冷掉、也别把主线拖垮"，正是我在做的学习工具想解的问题之一。现在 harness 层的 /fork 把它直接解了一半，idea也因此有了新的实现方向，而不是困在实现基础功能上。</p></section>
+<section><h2><span class="num">07</span>结尾：当我谈论/fork时，我在谈论什么</h2><p>从学生时代起，我对自己的定位就很清晰：好奇心有余而求知欲不足。对于Agent的探索也是如此，虽然一直都保持着好奇，但经常由于畏难而认知滞后。本质上来说，其实是不够聪明，故而探究事物时畏惧复杂逻辑。但又有点小聪明，会去判断探究到什么程度时，边际效益就衰减的厉害。考试只需要每一科都考的还行，就能上还行的学校；代码能力和沟通能力没有明显的短板，就能来所谓的大厂拧螺丝。</p><p>但 Agent 时代，其实给每个人都外挂了一个好奇心满足系统，好奇心被满足的越来越快，求知欲也就越来越趋于稳定。当我在谈论<code>/fork</code>时，也许想谈论的是，它如何在Agent时代再次降低了推石头的摩擦，让我可以把“边际效益”这种理性的算计暂时抛在脑后。唯一的问题，可能是比较影响睡眠<s>，我缺的睡眠这块谁来给我补啊.jpg</s>。</p><figure><img src="data:image/png;base64,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" style="width:100%;height:auto;display:block;border:1px solid #e3e3df;border-radius:6px;"/><figcaption><span class="fig-num">FIG 9</span>活动热力图：深夜在线，影响睡眠</figcaption></figure></section>
+
+<footer><h4>参考资料</h4><p class="ref-group"><strong>官方文档（Claude Code / Claude API）</strong></p><ul><li><a href="https://code.claude.com/docs/en/sub-agents">Sub-agents · fork / background agents / 触发方式与版本</a></li><li><a href="https://code.claude.com/docs/en/prompt-caching">Prompt Caching · 严格前缀缓存 / fork 复用父缓存</a></li><li><a href="https://code.claude.com/docs/en/env-vars">Environment variables · CLAUDE_CODE_FORK_SUBAGENT 等</a></li><li><a href="https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool">Tool Search Tool · deferred 工具 inline tool_reference 保缓存</a></li></ul><p class="ref-group"><strong>第三方分析 / 逆向</strong></p><ul><li><a href="https://blog.wh1isper.top/2026/03/06/tool-search-for-agents/">Wh1isper · Tool Search for Agents（call_tool 间接层路线）</a></li><li><a href="https://gist.github.com/sorrycc/cca0b238a15027c3572f19b353a00853">Claude Code /btw command · Quick Side Question 实现细节</a></li></ul><p class="ref-group"><strong>一手实证</strong></p><ul><li>grep 本机 claude.exe 二进制：派发逻辑（XUO、subagent_type void-0 分支）、querySource 31 值、canUseTool deny、fork-context-ref</li><li>transcript 实测：cache_read / token / 时间戳 / .meta.json / 执行窗口重叠扫描</li><li>craft/practices/claude-code-fork-btw-branch-subagent（wiki）</li></ul><p class="ref-group"><strong>生产本文主要用到的（非cc官方）skill</strong></p><ul><li><a href="https://github.com/zarazhangrui/beautiful-feishu-whiteboard">beautiful-feishu-whiteboard · Riso Brut 配图 skill</a></li><li><a href="https://github.com/larksuite/cli">larksuite/cli · 官方 Lark/Feishu CLI</a></li></ul></footer>
+</article></body></html>
