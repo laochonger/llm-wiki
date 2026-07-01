@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="data:," />
+    <title>Are We Ready For An Agent-Native Memory System? · 读后判断</title>
+    <style>
+      :root {
+        --paper: #f7f7f5;
+        --paper-edge: #efefea;
+        --ink: #1a1a1a;
+        --ink-soft: #4a4a4a;
+        --ink-faint: #7a7a7a;
+        --rule: #d8d8d2;
+        --rule-soft: #e8e8e2;
+        --accent: #6f9bb8;
+        --accent-soft: #d9e6f0;
+        --accent-faint: #eef4f8;
+        --warn: #b88a4a;
+        --warn-soft: #f5ecdc;
+        --danger: #a05050;
+        --code-bg: #ececea;
+        --brain: #6f9bb8;
+        --brain-bg: #eef4f8;
+        --hands: #b88a4a;
+        --hands-bg: #f5ecdc;
+        --session: #6b7560;
+        --session-bg: #ecede5;
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html { font-size: 16px; }
+      body {
+        font-family:
+          ui-serif, "Charter", "Iowan Old Style", "Source Serif Pro", Georgia,
+          "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+        background: var(--paper);
+        color: var(--ink);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        padding: 64px 24px 96px;
+      }
+      .doc { max-width: 880px; margin: 0 auto; }
+      .doc-header {
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: 28px;
+        margin-bottom: 48px;
+      }
+      .doc-eyebrow {
+        font-family: ui-monospace, "SF Mono", Menlo, "PingFang SC", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 14px;
+      }
+      .doc-title {
+        font-family: ui-serif, Charter, Georgia, "Songti SC", "Source Han Serif SC", serif;
+        font-size: 34px;
+        font-weight: 600;
+        letter-spacing: 0;
+        line-height: 1.2;
+      }
+      .doc-subtitle {
+        font-size: 16px;
+        color: var(--ink-soft);
+        margin-top: 10px;
+        font-style: italic;
+      }
+      .doc-meta {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 11px;
+        color: var(--ink-faint);
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px 24px;
+      }
+      .mascot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        margin-right: 8px;
+        vertical-align: middle;
+      }
+      .tldr {
+        background: var(--accent-faint);
+        border-left: 2px solid var(--accent);
+        padding: 20px 24px;
+        margin-bottom: 56px;
+        font-size: 15px;
+      }
+      .tldr-label {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      section { margin-bottom: 56px; }
+      h2 {
+        font-size: 22px;
+        font-weight: 600;
+        letter-spacing: 0;
+        margin-bottom: 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid var(--rule);
+      }
+      h2 .num {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 12px;
+        color: var(--ink-faint);
+        font-weight: 500;
+        margin-right: 14px;
+        letter-spacing: 0.05em;
+      }
+      h3 { font-size: 16px; font-weight: 600; margin: 28px 0 10px; }
+      p { margin-bottom: 14px; }
+      p + p { margin-top: -2px; }
+      a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent-soft); }
+      a:hover { border-bottom-color: var(--accent); }
+      code {
+        font-family: ui-monospace, "SF Mono", Menlo, "PingFang SC", monospace;
+        font-size: 13px;
+        background: var(--code-bg);
+        padding: 1px 5px;
+        border-radius: 2px;
+      }
+      ul, ol { margin: 8px 0 16px 22px; }
+      li { margin-bottom: 6px; }
+      strong { font-weight: 600; }
+      em { color: var(--ink-soft); }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 14px 0 18px;
+        font-size: 14px;
+      }
+      th, td {
+        text-align: left;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--rule-soft);
+        vertical-align: top;
+      }
+      th {
+        font-weight: 600;
+        font-family: ui-sans-serif, system-ui, "PingFang SC", sans-serif;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--ink-faint);
+        border-bottom: 1px solid var(--rule);
+      }
+      tbody tr:hover { background: rgba(0,0,0,0.015); }
+      td.num {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 13px;
+      }
+      td.accent { color: var(--accent); font-weight: 500; }
+      .callout {
+        border: 1px solid var(--rule);
+        background: #fff;
+        padding: 16px 18px;
+        margin: 16px 0 20px;
+      }
+      .callout.warn {
+        border-color: #e6d4a8;
+        background: var(--warn-soft);
+      }
+      .callout-label {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 10.5px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 8px;
+        font-weight: 600;
+      }
+      .callout.warn .callout-label { color: var(--warn); }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+        margin: 20px 0 18px;
+      }
+      .cards.cols-2 { grid-template-columns: repeat(2, 1fr); }
+      .card {
+        border: 1px solid var(--rule);
+        background: #fff;
+        padding: 16px 16px 14px;
+      }
+      .card-icon {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .card.tone-a .card-icon { color: var(--brain); }
+      .card.tone-b .card-icon { color: var(--hands); }
+      .card.tone-c .card-icon { color: var(--session); }
+      .card-name {
+        font-family: ui-serif, Charter, Georgia, "Songti SC", serif;
+        font-size: 17px;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .card-where {
+        font-size: 12px;
+        color: var(--ink-faint);
+        font-style: italic;
+        margin-bottom: 10px;
+      }
+      .card-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+      figure {
+        margin: 28px 0 32px;
+        border: 1px solid var(--rule);
+        background: #fff;
+      }
+      figure svg { display: block; width: 100%; height: auto; }
+      figcaption {
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        padding: 10px 16px;
+        border-top: 1px solid var(--rule-soft);
+        background: var(--paper-edge);
+      }
+      figcaption .fig-num {
+        color: var(--accent);
+        margin-right: 10px;
+        font-weight: 600;
+      }
+      footer {
+        margin-top: 80px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+        font-size: 12px;
+        color: var(--ink-faint);
+      }
+      footer h4 {
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        font-family: ui-monospace, Menlo, "PingFang SC", monospace;
+        margin-bottom: 10px;
+        color: var(--ink-soft);
+      }
+      footer ul { list-style: none; margin-left: 0; }
+      footer li { margin-bottom: 5px; }
+      @media (max-width: 720px) {
+        body { padding: 32px 16px 64px; }
+        .doc-title { font-size: 26px; }
+        .cards, .cards.cols-2 { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <article class="doc">
+      <header class="doc-header">
+        <div class="doc-eyebrow"><span class="mascot"></span>Agent Memory · Paper Read</div>
+        <h1 class="doc-title">Are We Ready For An Agent-Native Memory System?</h1>
+        <p class="doc-subtitle">这篇论文真正有价值的是“把 memory 当数据管理系统拆开评测”，不是“证明某个 memory 框架已经赢了”。</p>
+        <div class="doc-meta">
+          <span>DATE · 2026-07-01</span>
+          <span>PAPER · arXiv:2606.24775v1</span>
+          <span>STANCE · USEFUL BUT EARLY</span>
+        </div>
+      </header>
+
+      <div class="tldr">
+        <div class="tldr-label">TL;DR</div>
+        论文的核心判断基本成立：agent memory 不能再只看 F1 或 BLEU，而要拆成 representation/storage、extraction、retrieval/routing、maintenance 四层分别评估。对我们最有借鉴意义的是 late filtering、保留 raw evidence、保守合并、localized maintenance、Signal 化投影。存疑点也明显：benchmark 仍偏聊天/问答，公开仓库还很早，绝对分数低，adapter 公平性和生产可复现性需要继续验证。
+      </div>
+
+      <section>
+        <h2><span class="num">01</span>论文到底在说什么</h2>
+        <p>作者把 agent memory 定义成一个独立的数据管理系统：它不只是 RAG，也不只是长上下文，而是负责持续保存、抽取、检索、更新、合并、遗忘、路由上下文的基础层。这个定义和我们平时说的“session/history/context”不在一个层级。</p>
+        <p>论文把 memory 系统拆成四个模块：<strong>表示与存储</strong>、<strong>抽取</strong>、<strong>检索与路由</strong>、<strong>维护</strong>。然后统一评测 12 个代表系统和 2 个 baseline，覆盖 LongMemEval、LoCoMo、LongBench、MemoryAgentBench、MemBench 等 workload，目标不是问“哪个框架最好”，而是问“什么结构适合什么瓶颈”。</p>
+        <div class="cards">
+          <div class="card tone-a">
+            <div class="card-icon">CLAIM</div>
+            <div class="card-name">没有通吃架构</div>
+            <div class="card-where">effectiveness</div>
+            <div class="card-desc">hybrid 在会话 QA 上更强，graph 在事实更新上更稳，长上下文在精确措辞上仍有优势。</div>
+          </div>
+          <div class="card tone-b">
+            <div class="card-icon">CLAIM</div>
+            <div class="card-name">检索不是 top-1 问题</div>
+            <div class="card-where">retrieval fidelity</div>
+            <div class="card-desc">真正难的是把分散、陈旧、跨 session 的 evidence 重新组装成可回答上下文。</div>
+          </div>
+          <div class="card tone-c">
+            <div class="card-icon">CLAIM</div>
+            <div class="card-name">维护策略决定长期稳定性</div>
+            <div class="card-where">maintenance</div>
+            <div class="card-desc">过度总结会丢稀疏线索，延迟 flush 会让近期证据未解析，保守合并更稳。</div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2><span class="num">02</span>哪些结论我认为是真的</h2>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 30%;">结论</th>
+              <th>为什么可信</th>
+              <th style="width: 25%;">对系统设计的含义</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>memory 应该模块化评测</strong></td>
+              <td>representation、extraction、retrieval、maintenance 的错误模式不同。只看最终回答会把“写坏了”“搜坏了”“合并坏了”“生成坏了”混成一个黑盒失败。</td>
+              <td class="accent">评测面要拆开</td>
+            </tr>
+            <tr>
+              <td><strong>raw evidence 很重要</strong></td>
+              <td>论文的 ablation 显示，过度 summary/compression 会牺牲长期 factual recall 和 compositional reasoning。这个直觉也符合个人知识库：原文证据和派生摘要必须分层。</td>
+              <td class="accent">保留原始引用和 source_id</td>
+            </tr>
+            <tr>
+              <td><strong>retrieval 是 evidence assembly</strong></td>
+              <td>SimpleMem top-1 强，但 A-MEM/MemTree 在更大 K 和更远 evidence gap 下更稳。说明 retrieval 不是只命中一个相关片段，而是组织多片证据。</td>
+              <td class="accent">Signal 要能追溯相关证据组</td>
+            </tr>
+            <tr>
+              <td><strong>temporal update 不是靠大模型硬想</strong></td>
+              <td>Graph/temporal 组织在更新型任务上更可靠，因为后写事实能绑定同一实体或事件，而不是追加成一堆冲突文本。</td>
+              <td class="accent">事实要版本化、可废弃</td>
+            </tr>
+            <tr>
+              <td><strong>localized maintenance 是成本关键</strong></td>
+              <td>全局重组、图全量合并、多 store 同步的 latency 很容易爆。局部路径合并、分段压缩、bounded retrieval 更接近可用系统。</td>
+              <td class="accent">默认小步维护，不全库重写</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2><span class="num">03</span>哪些地方存疑</h2>
+        <div class="callout warn">
+          <div class="callout-label">CAUTION</div>
+          这篇论文适合作为系统设计坐标系，不适合当成“某类 memory 架构已经被证明优越”的证据。它给的是方向，不是可直接照抄的生产答案。
+        </div>
+        <ol>
+          <li><strong>公开可复现还早。</strong>GitHub 仓库确实公开了统一 launcher、method presets 和 runtime layout，但当前更像 research benchmark scaffold；datasets 不随仓库分发，需要用户自行放置，说明从“论文数字”到“外部完全复跑”还有距离。</li>
+          <li><strong>adapter 公平性难完全保证。</strong>把 Mem0、Zep、Letta、A-MEM、LightMem 等异构系统塞进同一 runner，本身就会引入 adapter 质量、配置、依赖版本、prompt、embedding、LLM endpoint 的混杂变量。</li>
+          <li><strong>绝对分数偏低。</strong>不少表里的 EM/F1 并不高。比如更新型 slice 上，即使最好方法也远不是“可靠 memory”。这更像说明领域还不成熟，而不是证明某个架构 ready。</li>
+          <li><strong>benchmark 仍偏 conversational QA。</strong>论文说的是 agent-native，但很多证据来自对话问答、长上下文、事实更新。真实 agent memory 还包括 tool traces、permissioned actions、user intent drift、private data policy、scheduled runtime state，这些没有被充分覆盖。</li>
+          <li><strong>成本数字不能直接外推生产。</strong>论文报告了 construction/query latency，但真实系统的成本还受增量刷新、cache 命中、后台批处理、失败恢复、隐私过滤和多租户隔离影响。</li>
+          <li><strong>“agent-native”这个词有点大。</strong>论文更准确的贡献是 memory data-management benchmark。要称 agent-native，还需要把 action provenance、tool result state、scheduler、human approval、multi-source trust 纳入同一模型。</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2><span class="num">04</span>对 Agentara wiki 的借鉴</h2>
+        <p>我们最近的 wiki 方向已经很接近论文里更可信的部分：不要让 connector 直接写 wiki 正文；先落 raw source 和 normalized event，再由 diary、projects、people、finance、life 等实体消费；dashboard 不是 source of truth，而是把 wiki、runtime、logs 编译成 Signal。</p>
+        <figure>
+          <svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg"
+               font-family="ui-monospace, Menlo, monospace" font-size="12">
+            <rect width="760" height="360" fill="#fff"/>
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5"
+                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#6f9bb8"/>
+              </marker>
+            </defs>
+            <g>
+              <rect x="40" y="126" width="136" height="88" fill="#eef4f8" stroke="#6f9bb8" stroke-width="1.4"/>
+              <text x="52" y="148" fill="#6f9bb8" font-weight="600" letter-spacing="0.1em" font-size="11">RAW SOURCE</text>
+              <text x="52" y="171" fill="#4a4a4a">chat / meeting</text>
+              <text x="52" y="192" fill="#4a4a4a">file / payment</text>
+            </g>
+            <g>
+              <rect x="212" y="126" width="136" height="88" fill="#fff" stroke="#6f9bb8" stroke-width="1.4"/>
+              <text x="224" y="148" fill="#6f9bb8" font-weight="600" letter-spacing="0.1em" font-size="11">EVENT LAYER</text>
+              <text x="224" y="171" fill="#4a4a4a">normalized jsonl</text>
+              <text x="224" y="192" fill="#4a4a4a">raw_ref + time</text>
+            </g>
+            <g>
+              <rect x="384" y="126" width="136" height="88" fill="#f5ecdc" stroke="#b88a4a" stroke-width="1.4"/>
+              <text x="396" y="148" fill="#7a6420" font-weight="600" letter-spacing="0.1em" font-size="11">WIKI ENTITY</text>
+              <text x="396" y="171" fill="#4a4a4a">project / diary</text>
+              <text x="396" y="192" fill="#4a4a4a">knowledge note</text>
+            </g>
+            <g>
+              <rect x="556" y="126" width="164" height="88" fill="#ecede5" stroke="#6b7560" stroke-width="1.4"/>
+              <text x="568" y="148" fill="#5a5a3a" font-weight="600" letter-spacing="0.1em" font-size="11">SIGNAL CARD</text>
+              <text x="568" y="171" fill="#4a4a4a">attention_level</text>
+              <text x="568" y="192" fill="#4a4a4a">actions + evidence</text>
+            </g>
+            <g fill="none" stroke="#6f9bb8" stroke-width="1.4">
+              <path d="M 176 170 L 210 170" marker-end="url(#arr)"/>
+              <path d="M 348 170 L 382 170" marker-end="url(#arr)"/>
+              <path d="M 520 170 L 554 170" marker-end="url(#arr)"/>
+            </g>
+            <text x="280" y="260" fill="#7a7a7a" text-anchor="middle">late filtering: capture broadly, select at read time</text>
+            <text x="452" y="288" fill="#7a7a7a" text-anchor="middle">maintenance: conservative merge, never overwrite raw evidence</text>
+          </svg>
+          <figcaption><span class="fig-num">FIG 1</span>Agentara wiki memory should compile signals from preserved evidence, not rewrite raw sources into premature summaries.</figcaption>
+        </figure>
+
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 30%;">论文启发</th>
+              <th>放到我们系统里</th>
+              <th style="width: 24%;">下一步设计动作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>late filtering</strong></td>
+              <td>connector 和 daily ingest 尽量保留多一点上下文，别在写入时过早总结或丢弃。真正的筛选放在 dashboard indexer 和 query-time retrieval。</td>
+              <td class="accent">event 字段补 `raw_ref`、`source_id`、`sensitivity`</td>
+            </tr>
+            <tr>
+              <td><strong>evidence assembly</strong></td>
+              <td>Now Stream 里的 Signal 不应该只指向一个页面，而应该能指向一组证据：issue、log、event、runtime 状态、上次输出。</td>
+              <td class="accent">Signal schema 加 `evidence_refs`</td>
+            </tr>
+            <tr>
+              <td><strong>temporal update fidelity</strong></td>
+              <td>同一个事实被更新时，不能只 append 新正文。需要显式区分 current、stale、superseded，并保留时间戳。</td>
+              <td class="accent">知识页支持 revision/event links</td>
+            </tr>
+            <tr>
+              <td><strong>localized maintenance</strong></td>
+              <td>dashboard 增量刷新靠 log tail，全量扫描只做 periodic rebuild。不要因为一个事件重写全 wiki 或全 dashboard cache。</td>
+              <td class="accent">log event 驱动局部 signal 更新</td>
+            </tr>
+            <tr>
+              <td><strong>conservative consolidation</strong></td>
+              <td>diary draft、project issue、knowledge note 的提升要保守。先形成 draft signal，确认有长期价值再写回 wiki 实体。</td>
+              <td class="accent">agent enrichment 默认进 cache</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2><span class="num">05</span>我的结论</h2>
+        <p>这篇论文最值得拿走的是一个评测姿势：agent memory 不是“有没有向量库”，而是“证据怎么进来、怎么保真、怎么被选中、怎么更新、怎么过期”。它和我们做 wiki dashboard 的问题是同一个母题：长期知识源、外部 runtime、operation log、attention signal 之间要分层。</p>
+        <p>但我不会从这篇论文推出“我们该上 graph DB”或“我们该做完整 memory OS”。对 Agentara 当前阶段，正确动作更小：保留 raw/event，给 Signal 增加 evidence refs，写 dashboard-aware log，做局部 indexer，建立 update/stale 规则。先把个人 wiki 的 memory loop 做实，再讨论更重的存储拓扑。</p>
+      </section>
+
+      <footer>
+        <h4>References</h4>
+        <ul>
+          <li>Wei Zhou et al. · <a href="https://arxiv.org/pdf/2606.24775">Are We Ready For An Agent-Native Memory System?</a></li>
+          <li>OpenDataBox · <a href="https://github.com/OpenDataBox/MemoryData">MemoryData benchmark repository</a></li>
+          <li>Agentara local project notes · wiki autopipe event layer, dashboard signal model, dashboard cockpit issue</li>
+        </ul>
+      </footer>
+    </article>
+  </body>
+</html>
